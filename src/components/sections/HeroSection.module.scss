@@ -1,0 +1,268 @@
+// Variables
+$amber-500: #f59e0b;
+$amber-600: #d97706;
+$white: #fff;
+$gray-300: #d1d5db;
+$gray-400: #9ca3af;
+$gray-500: #6b7280;
+$gray-600: #4b5563;
+$gray-700: #374151;
+$gray-dark: #111111;
+$black: #000;
+$transparent: transparent;
+$orange-glow-start: rgba(255, 153, 0, 0.9);
+$orange-glow-mid: rgba(255, 153, 0, 0.7);
+$orange-glow-end: rgba(255, 153, 0, 0.3);
+$orange-shadow: rgba(255, 140, 0, 0.4);
+$dark-shadow: rgba(0,0,0,0.7);
+
+// Keyframes for pulsing animation (assuming a slow pulse)
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+// Section Styles
+.heroSection {
+  padding-top: 3rem;    // pt-12
+  padding-bottom: 4rem; // pb-16
+  position: relative;
+  overflow: hidden;
+  background-color: $gray-dark; // Now this variable is defined
+
+  @media (min-width: 768px) { // md:
+    padding-top: 4rem;    // md:pt-16
+  }
+}
+
+.container {
+  max-width: 1280px; // Adjust if needed
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  padding-left: 1rem; // px-4
+  padding-right: 1rem; // px-4
+  position: relative;
+  z-index: 10;
+
+  @media (min-width: 768px) { // md:
+    padding-left: 1.5rem; // md:px-6
+    padding-right: 1.5rem; // md:px-6
+  }
+}
+
+.headline {
+  font-size: 3.75rem; // text-6xl (approx, adjust as needed)
+  font-weight: 600; // font-semibold
+  margin-bottom: 3rem; // mb-12
+  letter-spacing: -0.025em; // tracking-tight
+
+  @media (min-width: 768px) { // md:
+    // font-size: 4.5rem; // md:text-7xl (if needed)
+  }
+
+  .headlineWhite {
+    color: $white;
+  }
+
+  .headlineGradient {
+    background: linear-gradient(to right, $white, $gray-400);
+    -webkit-background-clip: text; // For Safari/Chrome
+    background-clip: text;
+    color: $transparent;
+  }
+}
+
+.subHeadline {
+  max-width: 56rem; // max-w-3xl
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 3rem; // mb-12
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem; // space-y-3
+
+  p {
+    color: $gray-300;
+    font-size: 1rem; // text-base
+    line-height: 1.375; // leading-snug
+    white-space: nowrap; // whitespace-nowrap
+  }
+}
+
+.ctaContainer {
+  display: flex;
+  flex-direction: column; // Default mobile
+  align-items: center;
+  justify-content: center;
+  gap: 3rem; // gap-12
+
+  @media (min-width: 768px) { // md:
+    flex-direction: row; // md:flex-row
+  }
+}
+
+.trialButton {
+  background-color: $amber-500;
+  color: $white;
+  padding: 0.75rem 2rem; // px-8 py-3
+  border-radius: 9999px; // rounded-full
+  font-weight: 500; // font-medium
+  transition: background-color 200ms, box-shadow 200ms;
+  min-width: 180px;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0, 0.1), 0 2px 4px -2px rgba(0,0,0, 0.1); // shadow-md
+  text-decoration: none; // Remove default link underline
+  display: inline-flex; // Ensure it behaves like a button
+  align-items: center;
+
+  &:hover {
+    background-color: $amber-600;
+    box-shadow: 0 10px 15px -3px rgba(0,0,0, 0.1), 0 4px 6px -4px rgba(0,0,0, 0.1); // hover:shadow-lg
+  }
+
+  .buttonContent {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .text {
+    margin-right: 0.25rem; // mr-1
+  }
+
+  .arrow {
+    margin-left: 0.25rem; // ml-1
+    font-size: 1.125rem; // text-lg
+  }
+}
+
+// How It Works Button Styles
+.howItWorksButton {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; // gap-3
+  color: $white;
+  font-weight: 500; // font-medium
+  text-decoration: none;
+  transition: color 200ms;
+
+  &:hover {
+    color: $gray-300;
+
+    .iconContainer {
+      .outerCircle { border-color: $gray-300; }
+      .innerCircle { border-color: $gray-400; }
+    }
+    .linkText {
+      text-decoration-color: $gray-400;
+    }
+  }
+}
+
+.iconContainer {
+  position: relative;
+  width: 3rem; // w-12
+  height: 3rem; // h-12
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.outerCircle, .innerCircle {
+  position: absolute;
+  border-radius: 9999px; // rounded-full
+  border-style: solid;
+  border-width: 1px;
+  // Apply animation directly
+  animation: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.outerCircle {
+  width: 3rem; // w-12
+  height: 3rem; // h-12
+  border-color: $gray-500;
+  transition: border-color 200ms;
+}
+
+.innerCircle {
+  width: 2rem; // w-8
+  height: 2rem; // h-8
+  border-color: $gray-600;
+  transition: border-color 200ms;
+  animation-delay: 300ms; // animation-delay-300
+  background-color: rgba($gray-700, 0.2); // bg-gray-700/20
+  // backdrop-filter: blur(2px); // backdrop-blur-sm - use with caution for performance
+}
+
+.playIcon {
+  width: 11px;
+  height: 13px;
+  fill: $white;
+  position: relative;
+  z-index: 10;
+}
+
+.linkText {
+  text-decoration: underline;
+  text-underline-offset: 4px; // underline-offset-4
+  text-decoration-color: $gray-600; // decoration-gray-600
+  transition: text-decoration-color 200ms;
+}
+
+
+// Chat Interface Image Styles
+.imageContainer {
+  position: relative;
+  margin-top: 8rem; // Reduced top margin slightly
+  display: flex; // Added flex to center the frame if max-width is applied
+  justify-content: center; // Center the frame horizontally
+}
+
+.glowImage {
+  position: absolute;
+  top: -4.5rem; // Adjusted slightly for potentially smaller frame
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%; // Slightly reduced width relative to smaller frame
+  max-width: 1100px; // Added max-width to limit size (adjust as needed)
+  height: auto; // Maintain aspect ratio
+  z-index: 0; // Same z-index as the old glow
+  pointer-events: none; // Ensure it doesn't interfere with interactions
+}
+
+.imageFrame {
+  position: relative;
+  border-radius: 1.5rem; // rounded-3xl
+  overflow: hidden;
+  border: 2px solid $gray-600; // border-2 border-gray-600
+  padding: 0.75rem; // Reduced padding slightly
+  background-color: $black; // bg-black
+  z-index: 10; // Above the glow image
+  max-width: 1100px; // Added max-width to limit size (adjust as needed)
+  width: 90%; // Make it take up less horizontal space by default
+}
+
+.chatImage {
+  width: 100%; // w-full - will fill the smaller frame
+  height: auto; // h-auto
+  display: block; // display:block
+  border-radius: 1.125rem; // Adjusted inner radius for reduced padding
+}
+
+// Bottom Glow Effect
+.bottomGlow {
+  position: absolute;
+  width: 800px;
+  height: 300px;
+  border-radius: 9999px; // rounded-full
+  background-color: rgba($amber-500, 0.1); // bg-amber-500/10
+  filter: blur(120px); // blur-[120px]
+  top: 85%;
+  left: 50%;
+  transform: translate(-50%, -50%); // transform -translate-x-1/2 -translate-y-1/2
+  z-index: -1; // Behind content
+} 

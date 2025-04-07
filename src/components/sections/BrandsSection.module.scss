@@ -1,0 +1,108 @@
+// Variables
+$gray-dark: #111111;
+$gray-light: #2a2a2a; // Or similar, based on visual need for hover/focus if added
+$gray-300: #d1d5db;
+$gray-800: #1f2937;
+$gray-900: #111827;
+$white: #fff;
+$transparent: transparent;
+
+// Section Styles
+.brandsSection {
+  padding-top: 3rem;    // py-12
+  padding-bottom: 3rem; // py-12
+  background-color: $gray-dark;
+  position: relative;
+  overflow: hidden; // Important for the ticker
+  border-top: 1px solid $gray-900; // border-t border-gray-900
+}
+
+.container {
+  max-width: 1280px; // Adjust if needed
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem; // px-4
+  padding-right: 1rem; // px-4
+  position: relative;
+  z-index: 10;
+}
+
+// Header Text
+.headerText {
+  text-align: center;
+  margin-bottom: 2.5rem; // mb-10
+  color: $gray-300;
+  font-size: 1.125rem; // text-lg
+}
+
+// Logo Ticker Styles
+.tickerContainer {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+// Keyframes for the ticker animation
+@keyframes ticker {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    // Translate by half the width because the track contains two sets of logos
+    transform: translateX(-50%);
+  }
+}
+
+.tickerTrack {
+  display: inline-flex; // Use inline-flex for proper item alignment
+
+  white-space: nowrap; // Prevent wrapping
+  will-change: transform; // Performance hint for animation
+  animation: ticker 25s linear infinite; // Apply the animation
+
+  &:hover {
+    animation-play-state: paused; // Pause animation on hover
+  }
+}
+
+.tickerItem {
+  padding-left: 3rem;  // px-12
+  padding-right: 3rem; // px-12
+  display: flex;       // Use flex for centering content
+  justify-content: center;
+  // group class equivalent is handled by nesting hover styles
+}
+
+.logoWrapper {
+  width: 19rem;
+  height: 4rem;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.brandLogo {
+  width: auto;
+  height: auto;
+  max-width: 150px;
+  max-height: 80px;
+  object-fit: contain;
+  filter: grayscale(100%);
+  opacity: 0.7;
+  transition: filter 300ms, opacity 300ms;
+
+  .logoWrapper:hover & {
+    filter: whitescale(1000%) brightness(1000%) contrast(100%);
+    opacity: 1;
+  }
+}
+
+// Subtle Divider Effect
+.bottomDivider {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px; // h-px
+  background: linear-gradient(to right, $transparent, $gray-800, $transparent); // bg-gradient-to-r from-transparent via-gray-800 to-transparent
+} 

@@ -1,0 +1,194 @@
+// Variables
+$amber-400: #fbbf24;
+$amber-500: #f59e0b;
+$orange-500: #f97316;
+$red-500: #ef4444;
+$amber-600: #d97706; // For gradient
+$white: #fff;
+$gray-400: #9ca3af;
+$gray-dark: #111111;
+$gray-medium: #222222;
+$black: #000;
+$stone-600: #57534e; // border-stone-600
+$placeholder-gray: #d9d9d9; // bg-[#d9d9d9]
+$placeholder-grad-from: #271a0d; // from-[#271a0d]
+$placeholder-grad-to: #1c1610;   // to-[#1c1610]
+$transparent: transparent;
+
+// Mixins (optional)
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Section Styles
+.featuresSection {
+  padding-top: 5rem;    // py-20
+  padding-bottom: 5rem; // py-20
+  background-color: $gray-dark;
+  position: relative;
+  overflow: hidden;
+
+  @media (min-width: 768px) { // md:
+    padding-top: 6rem;    // md:py-24
+    padding-bottom: 6rem; // md:py-24
+  }
+}
+
+.container {
+  max-width: 1280px; // Adjust if needed
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem; // px-4
+  padding-right: 1rem; // px-4
+  position: relative;
+  z-index: 10;
+}
+
+.layoutGrid {
+  display: flex;
+  flex-direction: column; // Default mobile
+  gap: 6rem; // gap-24 (adjust if needed visually)
+
+  @media (min-width: 1024px) { // lg:
+    flex-direction: row; // lg:flex-row
+  }
+}
+
+// Left Column (Features)
+.leftColumn {
+  @media (min-width: 1024px) { // lg:
+    width: calc(5 / 12 * 100%); // lg:w-5/12
+  }
+}
+
+.headerContent {
+  margin-bottom: 4rem; // mb-16
+}
+
+.tagWrapper {
+  display: inline-block;
+  border-radius: 9999px; // rounded-full
+  background-image: linear-gradient(to right, $amber-500, $orange-500, $red-500); // bg-gradient-to-r ...
+  margin-bottom: 2rem; // mb-8
+  padding: 2px; // For the inner border effect
+}
+
+.tagInner {
+  padding-left: 1.25rem; // px-5
+  padding-right: 1.25rem; // px-5
+  padding-top: 0.5rem;   // py-2
+  padding-bottom: 0.5rem; // py-2
+  // margin: 2px; // m-[2px] - handled by padding on wrapper
+  background-color: rgba($gray-medium, 0.8); // bg-[#222222]/80
+  border-radius: 9999px; // rounded-full
+  color: $white;
+  font-size: 0.875rem; // text-sm
+  font-weight: 500; // font-medium
+}
+
+.title {
+  font-size: 1.875rem; // text-3xl
+  font-weight: 600; // font-semibold
+  color: $white;
+  margin-bottom: 2.5rem; // mb-10
+  letter-spacing: -0.025em; // tracking-tight
+  line-height: 1.25; // leading-tight
+
+  @media (min-width: 768px) { // md:
+    font-size: 2.25rem; // md:text-4xl
+  }
+}
+
+.featuresList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; // space-y-2 (applied via gap)
+}
+
+.featureItem {
+  position: relative; // For the divider absolutely positioned below it
+}
+
+// Feature Card Styles
+.featureCard {
+  transition: all 300ms;
+  display: flex;
+  align-items: flex-start; // items-start
+  padding: 1.5rem; // p-6
+  border-radius: 0.75rem; // rounded-xl
+  border: 1px solid $transparent; // border border-transparent (start transparent)
+
+  &:hover {
+    border-color: $stone-600; // hover:border-stone-600
+    background: linear-gradient(to bottom, rgba($black, 0.5), rgba($amber-600, 0.2)); // hover:bg-gradient-to-b hover:from-black/50 hover:to-amber-600/20
+  }
+}
+
+.iconWrapper {
+  width: 2.5rem;  // w-10
+  height: 2.5rem; // h-10
+  @include flex-center;
+  margin-right: 1.25rem; // mr-5
+  flex-shrink: 0; // flex-shrink-0
+
+  // Apply icon color here if not done via component props
+  // > svg { color: $amber-500; } // Example if icon color isn't passed
+}
+
+.cardText {
+  // Container for title and description
+}
+
+.cardTitle {
+  color: $white;
+  font-weight: 700; // font-bold
+  font-size: 1.25rem; // text-xl
+  margin-bottom: 0.5rem; // mb-2
+}
+
+.cardDescription {
+  color: $gray-400;
+  font-size: 0.875rem; // text-sm
+  line-height: 1.625; // leading-relaxed
+  margin-top: 0.25rem; // mt-1
+}
+
+.divider {
+  position: absolute;
+  bottom: -4px; // Position below the card
+  left: 70px; // Start after icon area approx
+  right: 1.5rem; // right-6 (match card padding approx)
+  height: 1px; // h-[1px]
+  background: linear-gradient(to right, $transparent, rgba($amber-400, 0.6), $transparent); // via-amber-400/60
+  opacity: 1; // opacity-100
+}
+
+
+// Right Column (Placeholder)
+.rightColumn {
+  @media (min-width: 1024px) { // lg:
+    width: calc(7 / 12 * 100%); // lg:w-7/12
+  }
+  @include flex-center;
+}
+
+.placeholderOuter {
+  height: 600px; // h-[600px]
+  width: 90%; // w-[90%]
+  border-radius: 1rem; // rounded-2xl
+  background: linear-gradient(to bottom right, $placeholder-grad-from, $placeholder-grad-to); // bg-gradient-to-br ...
+  overflow: hidden;
+  @include flex-center;
+  padding: 3rem; // p-12 (adjust padding if needed)
+  border: 1px solid $stone-600; // border border-stone-600
+  box-shadow: 0 10px 15px -3px rgba(0,0,0, 0.1), 0 4px 6px -4px rgba(0,0,0, 0.1); // shadow-lg (approximated)
+}
+
+.placeholderInner {
+  width: 90%; // w-[90%]
+  height: 90%; // h-[90%]
+  border-radius: 0.5rem; // rounded-lg
+  background-color: $placeholder-gray; // bg-[#d9d9d9]
+} 

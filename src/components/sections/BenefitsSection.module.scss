@@ -1,0 +1,185 @@
+// Variables
+$amber-500: #f59e0b;
+$orange-500: #f97316;
+$red-500: #ef4444;
+$white: #fff;
+$gray-400: #9ca3af;
+$gray-700: #374151;
+$gray-dark: #111111;
+$gray-medium: #222222;
+$gray-light: #2a2a2a;
+$amber-900: #78350f; // For gradient
+$amber-600: #d97706; // For gradient
+
+// Mixins (optional)
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Section Styles
+.benefitsSection {
+  padding-top: 3rem;    // py-12
+  padding-bottom: 3rem; // py-12
+  background-color: $gray-dark;
+  position: relative;
+  overflow: hidden;
+
+  @media (min-width: 768px) { // md:
+    padding-top: 4rem;    // md:py-16
+    padding-bottom: 4rem; // md:py-16
+  }
+}
+
+.container {
+  max-width: 1280px; // Adjust if needed
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem; // px-4
+  padding-right: 1rem; // px-4
+  position: relative;
+  z-index: 10;
+}
+
+// Section Header
+.header {
+  margin-bottom: 3rem; // mb-12
+  text-align: center;
+}
+
+.tagWrapper {
+  display: inline-block;
+  border-radius: 9999px; // rounded-full
+  background-image: linear-gradient(to right, $amber-500, $orange-500, $red-500); // bg-gradient-to-r ...
+  margin-bottom: 1.5rem; // mb-6
+  padding: 2px; // For the inner border effect
+}
+
+.tagInner {
+  padding-left: 1rem;   // px-4
+  padding-right: 1rem;  // px-4
+  padding-top: 0.375rem; // py-1.5
+  padding-bottom: 0.375rem;// py-1.5
+  // margin: 2px; // m-[2px] - handled by padding on wrapper
+  background-color: rgba($gray-medium, 0.8); // bg-[#222222]/80
+  border-radius: 9999px; // rounded-full
+  color: $white;
+  font-size: 0.875rem; // text-sm
+}
+
+.title {
+  font-size: 1.875rem; // text-3xl
+  font-weight: 600; // font-semibold
+  margin-bottom: 1rem; // mb-4
+  letter-spacing: -0.025em; // tracking-tight
+
+  @media (min-width: 768px) { // md:
+    font-size: 2.25rem; // md:text-4xl
+  }
+
+  .titleWhite {
+    color: $white;
+  }
+
+  .titleAmber {
+    color: $amber-500;
+  }
+}
+
+// Benefits Grid
+.grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr)); // grid-cols-1
+  gap: 1.5rem; // gap-6
+
+  @media (min-width: 768px) { // md:
+    grid-template-columns: repeat(2, minmax(0, 1fr)); // md:grid-cols-2
+  }
+  @media (min-width: 1024px) { // lg:
+    grid-template-columns: repeat(3, minmax(0, 1fr)); // lg:grid-cols-3
+  }
+}
+
+// Benefit Card Styles
+.benefitCard {
+  border-radius: 0.75rem; // rounded-xl
+  padding: 3.5rem 2rem;  // px-8 py-14
+  background-color: $gray-light;
+  border: 1px solid rgba($gray-700, 0.6); // border border-gray-700/60
+  transition: all 300ms ease-in-out;
+  position: relative;
+  overflow: hidden; // Needed for hover effects/gradients
+
+  &:hover {
+    border-color: $amber-500;
+    background-image: linear-gradient(to bottom right, $gray-light, rgba($amber-900, 0.3), rgba($amber-600, 0.2)); // hover:bg-gradient-to-br ...
+    box-shadow: 0 10px 15px -3px rgba($amber-500, 0.1), 0 4px 6px -4px rgba($amber-500, 0.1); // hover:shadow-lg hover:shadow-amber-500/10
+    transform: translateY(-0.25rem); // hover:-translate-y-1
+
+    .iconContainer { // Target icon container on card hover
+      transform: scale(1.05); // group-hover:scale-105
+    }
+  }
+}
+
+.cardContent { // Wrapper for content inside card if needed for z-index
+  position: relative;
+  z-index: 10;
+}
+
+.iconContainer {
+  background-color: $amber-500;
+  width: 3.5rem; // w-14
+  height: 3.5rem; // h-14
+  border-radius: 0.75rem; // rounded-xl
+  @include flex-center;
+  margin-bottom: 2rem; // mb-8
+  transition: transform 300ms;
+  position: relative; // For Image layout="fill"
+  overflow: hidden; // For Image layout="fill"
+}
+
+.iconImage {
+  padding: 0.5rem; // p-2 applied via class on Image
+  object-fit: contain; // Ensure objectFit is applied
+}
+
+
+.cardTitle {
+  color: $white;
+  font-weight: 600; // font-semibold
+  font-size: 1rem; // text-base (adjusted from text-sm based on visual hierarchy)
+  margin-bottom: 0.75rem; // mb-3
+}
+
+.cardDescription {
+  color: $gray-400;
+  font-size: 0.75rem; // text-xs
+  line-height: 1.5; // leading-normal
+}
+
+// Decorative Glow Effects
+.glowBottomRight {
+  position: absolute;
+  width: 600px;
+  height: 300px;
+  border-radius: 9999px; // rounded-full
+  background-color: rgba($amber-500, 0.1); // bg-amber-500/10
+  filter: blur(120px); // blur-[120px]
+  bottom: 0;
+  right: 0;
+  z-index: 0;
+}
+
+.glowTopLeft {
+  position: absolute;
+  width: 600px;
+  height: 300px;
+  border-radius: 9999px; // rounded-full
+  background-color: rgba($amber-500, 0.05); // bg-amber-500/5
+  filter: blur(150px); // blur-[150px]
+  top: 20%;
+  left: 0;
+  z-index: 0;
+} 

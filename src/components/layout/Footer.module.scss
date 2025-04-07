@@ -1,0 +1,323 @@
+// Base Variables (consider moving to a global scope if used elsewhere)
+$amber-500: #f59e0b;
+$amber-600: #d97706;
+$black: #000;
+$white: #fff;
+$gray-200: #e5e7eb;
+$gray-300: #d1d5db;
+$gray-400: #9ca3af;
+$gray-500: #6b7280;
+$gray-600: #4b5563;
+$gray-dark: #111111;
+$gray-darker: #222222;
+$gray-darkest: #1e1e1e;
+$gray-text: #6D6D6D;
+$transparent-amber: rgba(255, 167, 0, 0.2); // #FFA70033
+
+// Mixins (optional, but can be helpful)
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Base Footer Styles
+.footer {
+  background-color: $gray-dark;
+  padding-top: 4rem; // pt-16
+  padding-bottom: 1.5rem; // pb-6
+  position: relative;
+  overflow: hidden;
+}
+
+// Container
+.container {
+  max-width: 1280px; // Default container max-width, adjust if needed
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem; // px-4
+  padding-right: 1rem; // px-4
+  position: relative;
+  z-index: 10;
+  margin-bottom: 4rem; // mb-8
+}
+
+// Grid Layout
+.grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr)); // grid-cols-1
+  gap: 2rem; // gap-8
+
+  @media (min-width: 768px) { // md:
+    grid-template-columns: repeat(3, minmax(0, 1fr)); // md:grid-cols-3
+  }
+}
+
+// Column Content
+.column {
+  // Base styles for each column div if needed
+}
+
+.sectionTitle {
+  color: $white;
+  font-size: 1.125rem; // text-lg
+  margin-bottom: 0.75rem; // mb-3
+  font-weight: 600; // font-semibold
+}
+
+.text {
+  color: $gray-400;
+  font-size: 0.875rem; // text-sm
+  line-height: 1.625; // leading-relaxed
+
+  &.marginBottomSmall { // Specific margin variations
+    margin-bottom: 0.25rem; // mb-1
+  }
+  &.marginBottomMedium {
+    margin-bottom: 0.75rem; // mb-3
+  }
+  &.marginBottomLarge {
+    margin-bottom: 1.5rem; // mb-6
+  }
+}
+
+
+// Social Icons
+.socialIcons {
+  display: flex;
+  gap: 0.75rem; // space-x-3
+}
+
+.socialIconLink {
+  width: 2.25rem; // w-9
+  height: 2.25rem; // h-9
+  border-radius: 9999px; // rounded-full
+  @include flex-center;
+  transition: background-color 200ms;
+
+  &.primary {
+    background-color: $amber-500;
+    &:hover {
+      background-color: $amber-600;
+    }
+    .icon { // Target icon within primary link
+      color: $black;
+    }
+  }
+
+  &.secondary {
+    background-color: $gray-darker;
+    &:hover {
+      background-color: #333333; // hover:bg-[#333333]
+    }
+    .icon { // Target icon within secondary link
+      color: $white;
+    }
+  }
+
+  .icon { // Common icon styles
+    font-size: 1rem; // size={16} approximation
+    transition: transform 200ms;
+  }
+
+  &:hover .icon { // Icon animation on link hover
+    transform: scale(1.1);
+  }
+}
+
+// Newsletter Section
+.newsletterForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem; // space-y-3
+}
+
+.emailInput {
+  width: 100%;
+  max-width: 20rem; // max-w-xs
+  background-color: $gray-darkest;
+  color: $gray-300;
+  font-size: 0.875rem; // text-sm
+  padding: 0.75rem 1rem; // px-4 py-3
+  border-radius: 9999px; // rounded-full
+  border: 1px solid rgba($gray-600, 0.5); // border border-gray-600/50
+  transition: all 200ms;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px $amber-500; // focus:ring-2 focus:ring-amber-500
+  }
+
+  &::placeholder {
+      color: $gray-400; // Placeholder text color approximation
+  }
+}
+
+.signUpButton {
+  align-self: flex-start;
+  background-color: $amber-500;
+  color: $white;
+  padding: 0.75rem 1.5rem; // px-6 py-3
+  border-radius: 9999px; // rounded-full
+  @include flex-center;
+  font-weight: 500; // font-medium
+  font-size: 0.875rem; // text-sm
+  transition: background-color 200ms, transform 200ms; // Add transform transition
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $amber-600;
+    .arrow { // Target arrow span on button hover
+      transform: translateX(0.25rem); // group-hover:translate-x-1
+    }
+  }
+
+  .text { // Text part of the button
+     margin-right: 0.25rem; // mr-1
+     color: $white; // Ensure text color is white
+     font-size: inherit; // Inherit size
+     line-height: inherit; // Inherit line height
+     margin-bottom: 0; // Reset margin
+  }
+
+  .arrow { // Arrow part of the button
+    margin-left: 0.25rem; // ml-1
+    font-weight: 700; // font-bold
+    transition: transform 200ms;
+  }
+}
+
+
+// Copyright Section
+.copyrightSection {
+  background-color: $transparent-amber;
+  padding-top: 1rem; // py-4
+  padding-bottom: 1rem; // py-4
+  margin-top: -2rem; // Adjust based on where it sits relative to the main footer content visually
+}
+
+.copyrightContainer {
+   max-width: 1280px; // Default container max-width, adjust if needed
+   margin-left: auto;
+   margin-right: auto;
+   padding-left: 1rem; // px-4
+   padding-right: 1rem; // px-4
+   display: flex;
+   flex-direction: column; // Default mobile layout
+   align-items: center;
+   justify-content: space-between;
+
+   @media (min-width: 768px) { // md:
+     flex-direction: row; // md:flex-row
+   }
+}
+
+.copyrightText {
+  color: $gray-text;
+  font-size: 0.75rem; // text-xs
+  margin-bottom: 0.75rem; // mb-3
+
+  @media (min-width: 768px) { // md:
+    margin-bottom: 0; // md:mb-0
+  }
+
+  .highlight {
+    color: $white;
+  }
+}
+
+.links {
+  display: flex;
+  gap: 1rem; // space-x-4
+  align-items: center; // Align items vertically
+}
+
+.linkItem {
+  color: $white;
+  font-size: 0.75rem; // text-xs
+  transition: color 200ms;
+
+  &:hover {
+    color: $gray-200;
+  }
+
+  &.secondary { // Style for Terms link
+    color: $gray-text;
+    &:hover {
+      color: $gray-500;
+    }
+  }
+}
+
+.separator {
+  color: $gray-400;
+  font-size: 0.75rem; // text-xs
+}
+
+// Scroll Top Button
+.scrollTopContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: -4rem; // -mt-16 (relative to copyright section or footer base?) - Adjust as needed
+  position: relative;
+  z-index: 20;
+  transition: opacity 300ms ease-in-out;
+  opacity: 0; // hidden by default
+  pointer-events: none;
+
+  &.visible { // Class to show the button
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+.scrollTopWrapper {
+  position: relative;
+  width: 2.5rem; // w-10
+  height: 2.5rem; // h-10
+}
+
+.scrollTopBackground {
+  position: absolute;
+  inset: 0;
+  width: 2.5rem; // w-10
+  height: 2.5rem; // h-10
+  background-color: $black;
+  border-radius: 9999px; // rounded-full
+}
+
+.scrollTopButton {
+  position: absolute;
+  margin: auto;
+  inset: 0;
+  background-color: $amber-500;
+  color: $black;
+  width: 2.25rem; // w-9
+  height: 2.25rem; // h-9
+  border-radius: 9999px; // rounded-full
+  @include flex-center;
+  transition: background-color 200ms, transform 200ms;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); // shadow-lg
+  z-index: 10; // Ensure button is above background
+  text-decoration: none; // Remove default link underline
+  font-weight: bold; // Make arrow bold
+
+  &:hover {
+    background-color: $amber-600;
+    transform: translateY(-0.25rem); // hover:-translate-y-1
+  }
+}
+
+// Decorative Blur Effect
+.blurEffect {
+  position: absolute;
+  width: 500px;
+  height: 300px;
+  border-radius: 9999px; // rounded-full
+  background-color: rgba($amber-500, 0.02); // bg-amber-500/5 approximation
+  filter: blur(150px); // blur-[150px]
+  top: 25%; // top-1/4
+  left: 0;
+  z-index: 0;
+} 

@@ -1,0 +1,149 @@
+// Base Variables (can be shared with Footer or moved to a global file)
+$amber-400: #fbbf24;
+$amber-500: #f59e0b;
+$amber-600: #d97706;
+$white: #fff;
+$gray-300: #d1d5db;
+$gray-700: #374151;
+$gray-dark: #111111;
+
+// Header Styles
+.header {
+  position: relative;
+  width: 100%;
+  padding-top: 1.5rem; // py-6
+  padding-bottom: 1.5rem; // py-6
+  background-color: $gray-dark;
+}
+
+// Container
+.container {
+  max-width: 1280px; // Default container max-width, adjust if needed
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 1rem; // px-4
+  padding-right: 1rem; // px-4
+
+  @media (min-width: 768px) { // md:
+    padding-left: 1.5rem; // md:px-6
+    padding-right: 1.5rem; // md:px-6
+  }
+}
+
+// Logo Area
+.logoArea {
+  display: flex;
+  align-items: center;
+}
+
+.logoLink {
+  display: flex;
+  align-items: center;
+}
+
+.logoImage {
+  // Specific image styles like filter applied inline
+  // width and height are directly on the Image component props
+  filter: brightness(1.15);
+}
+
+// Navigation
+.nav {
+  display: none; // hidden by default
+
+  @media (min-width: 768px) { // md:
+    display: flex; // md:flex
+    align-items: center;
+    gap: 2.5rem; // space-x-10
+  }
+}
+
+.navLink {
+  font-size: 0.875rem; // text-sm
+  font-weight: 600; // font-semibold
+  color: $gray-300;
+  transition: color 200ms;
+
+  &:hover {
+    color: $white;
+  }
+
+  &.active { // Style for the active link (Home)
+    color: $amber-500;
+    &:hover {
+      color: $amber-400;
+    }
+  }
+}
+
+// Actions Area (Sign Up / Get Started)
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem; // space-x-4
+}
+
+// Sign Up Button
+.signUpButton {
+  color: $white;
+  font-size: 0.875rem; // text-sm
+  display: flex;
+  align-items: center;
+  transition: color 200ms;
+  padding: 0.5rem 1rem; // px-4 py-2
+  text-decoration: none; // Ensure link looks like button text
+
+  .signUpContent {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.lockIcon {
+  margin-left: 0.375rem; // ml-1.5
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  fill: currentColor;
+}
+
+// Get Started Button
+.getStartedButton {
+  background-color: $amber-500;
+  color: $white;
+  padding: 0.5rem 1rem; // px-4 py-2
+  border-radius: 9999px; // rounded-full
+  display: flex;
+  align-items: center;
+  transition: background-color 200ms;
+  font-weight: 500; // font-medium
+  font-size: 0.875rem; // text-sm
+  text-decoration: none; // Remove default link underline
+
+  &:hover {
+    background-color: $amber-600;
+  }
+
+  .text {
+    margin-right: 0.25rem; // mr-1
+  }
+
+  .arrow {
+    margin-left: 0.25rem; // ml-1
+    color: $white;
+    font-weight: 600; // font-semibold
+  }
+}
+
+// Bottom Border Gradient
+.bottomBorder {
+  position: absolute;
+  bottom: 0.5rem; // bottom-2 (8px)
+  left: 0;
+  right: 0;
+  height: 1px; // h-px
+  background: linear-gradient(to right, $gray-dark, $gray-700, $gray-dark); // bg-gradient-to-r from-[#111111] via-gray-700 to-[#111111]
+} 
