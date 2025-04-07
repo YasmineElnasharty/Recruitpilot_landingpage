@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './HeroSection.module.scss'; // Import the SCSS module
+import { useEffect, useRef } from 'react'; // Import useEffect and useRef
 
 // How It Works Button component using SCSS modules
 const HowItWorksButton = () => {
@@ -22,10 +23,93 @@ const HowItWorksButton = () => {
   );
 };
 
+// // Removed easing function for linear motion
+// const easeOutCubic = (t: number): number => 1 - Math.pow(1 - t, 3);
+
 const HeroSection = () => {
+  // Ref for the image frame element
+  const imageFrameRef = useRef<HTMLDivElement>(null);
+  // Ref for the section itself to calculate relative scroll
+  const sectionRef = useRef<HTMLElement>(null);
+  const imageContainerRef = useRef<HTMLDivElement>(null);
+
+  // Add scroll effect logic
+  useEffect(() => {
+    const frame = imageFrameRef.current;
+    const section = sectionRef.current;
+    const imageContainer = imageContainerRef.current;
+    if (!frame || !section || !imageContainer) {
+        console.warn("HeroSection refs not found, scroll effect disabled.");
+        return;
+    }
+
+    const initialRotation = 15; // Start tilted AWAY (backward)
+    const finalRotation = 0;    // End upright
+
+    // Set initial state via CSS variable
+    frame.style.setProperty('--scroll-rotate-x', `${initialRotation}deg`);
+
+    const handleScroll = () => {
+      const containerTop = imageContainer.offsetTop; // Use image container's top position
+      // const containerHeight = imageContainer.offsetHeight; // Remove unused variable
+      const viewportHeight = window.innerHeight;
+      const scrollY = window.scrollY;
+
+      // --- Define Scroll Range with Precise Endpoint ---
+      // End animation exactly when the container top hits the viewport top
+      const animationEnd = containerTop;
+      // Start the animation significantly earlier, e.g., when the container top
+      // is still below the bottom of the viewport or just entering it.
+      // Let's start it when the container top is one full viewport height above its final position.
+      const animationStart = containerTop - viewportHeight;
+      // --- End Range Definition ---
+
+      const scrollRange = animationEnd - animationStart;
+
+      if (scrollRange <= 0) {
+         // If range is invalid, determine state based on scroll position
+         const finalStateProgress = scrollY >= animationEnd ? 1 : (scrollY <= animationStart ? 0 : 0);
+         const finalStateRotation = initialRotation + (finalRotation - initialRotation) * finalStateProgress;
+         frame.style.setProperty('--scroll-rotate-x', `${finalStateRotation}deg`);
+        return;
+      }
+
+      // Calculate progress relative to the new range
+      const currentScroll = scrollY - animationStart;
+      const progress = Math.max(0, Math.min(1, currentScroll / scrollRange));
+
+      // Use Linear Progress
+      const currentRotation = initialRotation + (finalRotation - initialRotation) * progress;
+
+      // console.log(`Progress: ${progress.toFixed(2)}, Rotation: ${currentRotation.toFixed(2)}deg`);
+
+      frame.style.setProperty('--scroll-rotate-x', `${currentRotation}deg`);
+    };
+
+    // Debounce function (optional but recommended for performance)
+    let timeoutId: NodeJS.Timeout | null = null;
+    const debouncedHandleScroll = () => {
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
+        timeoutId = setTimeout(() => {
+            handleScroll();
+            timeoutId = null;
+        }, 5); // Adjust debounce delay (e.g., 5-10ms)
+    };
+
+    window.addEventListener('scroll', debouncedHandleScroll, { passive: true });
+    handleScroll(); // Initial check
+
+    return () => {
+      window.removeEventListener('scroll', debouncedHandleScroll);
+      if (timeoutId) clearTimeout(timeoutId); // Cleanup timeout on unmount
+    };
+  }, []); // Empty dependency array ensures this runs only once on mount
+
   return (
-    // Apply SCSS module class to the section
-    <section className={styles.heroSection}>
+    // Add ref to the section
+    <section ref={sectionRef} className={styles.heroSection}>
       <div className={styles.container}>
         <h1 className={styles.headline}>
           <span className={styles.headlineWhite}>Stop sucking </span>
@@ -36,7 +120,7 @@ const HeroSection = () => {
 
         <div className={styles.subHeadline}>
           <p>
-            You might not, but let's face it, most recruitment sure does. Clunky systems, endless admin, perpetual ghosting, and ingrained biases.
+            You might not, but let&apos;s face it, most recruitment sure does. Clunky systems, endless admin, perpetual ghosting, and ingrained biases.
           </p>
           <p>
             RecruitPilot AI is built by recruiters who know better, using ethical, AI-powered simplicity that cuts through the crap.
@@ -58,7 +142,7 @@ const HeroSection = () => {
         </div>
 
         {/* Chat Interface Image Container */}
-        <div className={styles.imageContainer}>
+        <div ref={imageContainerRef} className={styles.imageContainer}>
           {/* Glow Image */}
           <Image
             src="/images/glow.png"
@@ -72,7 +156,7 @@ const HeroSection = () => {
           />
 
           {/* Image Frame */}
-          <div className={styles.imageFrame}>
+          <div ref={imageFrameRef} className={styles.imageFrame}>
             <Image
               src="/chat-interface.png"
               alt="RecruitPilot Chat Interface"

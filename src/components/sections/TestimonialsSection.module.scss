@@ -23,37 +23,51 @@ $gray-700: #374151;
 
 // Section Styles
 .testimonialsSection {
-  padding-top: 3rem;    // py-12
-  padding-bottom: 3rem; // py-12
+  padding-top: 3rem;    // Default mobile padding
+  padding-bottom: 3rem;
   background-color: $gray-dark;
   position: relative;
-  overflow: hidden;
+  overflow: hidden; // Keep for glow effect containment
 
-  @media (min-width: 768px) { // md:
-    padding-top: 4rem;    // md:py-16
+  @media (min-width: 768px) { // md: Tablet
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+  @media (min-width: 1024px) { // lg: Desktop
+    padding-top: 4rem;    // md:py-16 (Keep tablet/desktop padding same?)
     padding-bottom: 4rem; // md:py-16
   }
 }
 
-.contentWrapper { // Corresponds to relative z-10 div
+.contentWrapper {
   position: relative;
   z-index: 10;
 }
 
 // Section Header
 .header {
-  margin-bottom: 3rem; // mb-12
+  margin-bottom: 3rem; // Default desktop margin
   text-align: center;
-  padding-left: 3rem; // px-12
-  padding-right: 3rem; // px-12
+  padding-left: 1.5rem; // Reduced base padding
+  padding-right: 1.5rem;
+
+  // ADDED: Mobile adjustments
+  @media (max-width: 767px) {
+    margin-bottom: 2rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }
 
 .tagWrapper {
   display: inline-block;
   border-radius: 9999px; // rounded-full
   background-image: linear-gradient(to right, $amber-500, $orange-500, $red-500); // bg-gradient-to-r ...
-  margin-bottom: 1.5rem; // mb-6
+  margin-bottom: 1rem; // Reduced base margin
   padding: 2px; // For the inner border effect
+  @media (min-width: 768px) {
+    margin-bottom: 1.5rem; // Restore desktop margin
+  }
 }
 
 .tagInner {
@@ -64,93 +78,214 @@ $gray-700: #374151;
   background-color: rgba($gray-medium, 0.8); // bg-[#222222]/80
   border-radius: 9999px; // rounded-full
   color: $white;
-  font-size: 0.875rem; // text-sm
+  font-size: 0.8rem; // Smaller base font
+  padding: 0.25rem 0.75rem; // Smaller padding
+   @media (min-width: 768px) {
+      font-size: 0.875rem; // Restore desktop font
+      padding: 0.375rem 1rem; // Restore desktop padding
+   }
 }
 
 .title {
-  font-size: 1.875rem; // text-3xl
-  font-weight: 700; // font-bold (changed from semibold based on visual)
+  font-size: 1.75rem; // Mobile title size
+  font-weight: 700;
   color: $white;
-  margin-bottom: 1rem; // mb-4
-  letter-spacing: -0.025em; // tracking-tight
+  margin-bottom: 1rem;
+  letter-spacing: -0.025em;
 
   @media (min-width: 768px) { // md:
-    font-size: 2.25rem; // md:text-4xl
+    font-size: 2.25rem; // UNCHANGED Desktop size
   }
 
-  .titleHighlight {
-    color: $amber-500;
-  }
+  .titleHighlight { color: $amber-500; }
 }
 
 // Grid Styles
 .grid {
-  display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr)); // grid-cols-1
-  gap: 1rem; // gap-4
-  padding-left: 3rem; // px-12
-  padding-right: 3rem; // px-12
-
-  &.firstRow {
-    margin-bottom: 1.5rem; // mb-6
-  }
-
-  // &.secondRow { // If specific styles needed for second row
-  //   justify-items: end; // Example if justify-end is needed on grid items
-  // }
-
-  @media (min-width: 768px) { // md:
-    grid-template-columns: repeat(2, minmax(0, 1fr)); // md:grid-cols-2
-  }
-  @media (min-width: 1024px) { // lg:
+  display: none; // Hidden by default
+  @media (min-width: 1024px) { // Show only on large screens
+    display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr)); // lg:grid-cols-4
+    gap: 1.5rem; // Increased gap slightly for desktop
+    padding-left: 1.5rem; // Desktop padding
+    padding-right: 1.5rem;
+    &.firstRow { margin-bottom: 1.5rem; }
   }
 }
+
+// Mobile Stacked Card Styles (Replaces Mobile Swipe Styles)
+.mobileStackedContainer {
+  display: block; // Show container on mobile/tablet
+  position: relative; // Context for controls and track
+  width: 100%;
+  margin-top: 1rem;
+  perspective: 1000px; // Enable 3D perspective for rotation
+
+  @media (min-width: 1024px) { // Hide on large screens
+    display: none;
+  }
+
+  @media (max-width: 1023px) {
+     display: block;
+     position: relative;
+     width: 100%;
+     margin-top: 1rem;
+     perspective: 1000px;
+  }
+}
+
+.mobileStackedTrack {
+  position: relative;
+  width: 100%;
+  margin-bottom: 1.5rem; // Space before controls
+
+  // Add min-height based on estimated tallest card content + vertical transform space?
+  min-height: 200px; // Example minimum height - ADJUST AS NEEDED
+}
+
+.mobileCardWrapper {
+  position: absolute;
+  top: 50%; // Position origin at vertical center
+  left: 50%;
+  width: 75%; // Keep width setting
+  transform-origin: center center;
+  transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.5s ease;
+  opacity: 0;
+  z-index: 1;
+  backface-visibility: hidden;
+
+  // Base transform
+  transform: translate(-50%, -50%) scale(0.5) rotateY(0deg);
+
+  &.isActive {
+    transform: translate(-50%, -50%) scale(1) rotateY(0deg);
+    opacity: 1;
+    z-index: 10;
+  }
+
+  &.isPrevious {
+    transform: translate(calc(-50% - 40%), -50%) scale(0.8) rotateY(40deg);
+    opacity: 0.7;
+    z-index: 5;
+  }
+
+  &.isNext {
+    transform: translate(calc(-50% + 40%), -50%) scale(0.8) rotateY(-40deg);
+    opacity: 0.7;
+    z-index: 5;
+  }
+
+  &.isFarPrevious {
+     transform: translate(calc(-50% - 80%), -50%) scale(0.6) rotateY(50deg);
+     opacity: 0;
+     z-index: 1;
+  }
+   &.isFarNext {
+     transform: translate(calc(-50% + 80%), -50%) scale(0.6) rotateY(-50deg);
+     opacity: 0;
+     z-index: 1;
+   }
+
+   > div {
+     display: flex;
+     flex-direction: column;
+   }
+}
+
+// --- Slider Controls Below Cards (Mobile Only) ---
+.sliderControls {
+   display: none; // Hidden by default
+   @media (max-width: 1023px) { // Show on mobile/tablet
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      width: 100%;
+      margin-top: 1rem; // Space above controls
+   }
+}
+
+// Arrow Button Styles
+.arrowButton {
+   // ... (Keep previous styles: display none default, show on mobile, size, background, etc.) ...
+   @media (max-width: 1023px) {
+      // ...
+      width: 3rem;
+      height: 3rem;
+      // ...
+   }
+}
+.arrowLeft { /* No specific positioning */ }
+.arrowRight { /* No specific positioning */ }
 
 // Testimonial Card Styles
 .testimonialCard {
-  border-radius: 0.75rem; // rounded-xl
-  padding: 1.5rem 2rem;  // px-8 py-6
+  border-radius: 0.75rem;
+  padding: 1.5rem 1.5rem; // Adjusted base padding
   background-color: $gray-light;
-  border: 1px solid rgba($gray-700, 0.6); // border border-gray-700/60
-  transition: all 300ms ease-in-out;
+  border: 1px solid rgba($gray-700, 0.6);
+  transition: border-color 0.3s, background-image 0.3s, box-shadow 0.3s;
   position: relative;
   overflow: hidden;
-  height: 100%; // h-full
+  display: flex;
+  flex-direction: column;
 
+  @media (min-width: 1024px) { // Desktop-specific padding
+      padding: 1.5rem 2rem;
+  }
+
+  // Remove hover transform from base style
   &:hover {
     border-color: $amber-500;
-    background-image: linear-gradient(to bottom right, $gray-light, rgba($amber-900, 0.3), rgba($amber-600, 0.2)); // hover:bg-gradient-to-br ...
-    box-shadow: 0 10px 15px -3px rgba($amber-500, 0.1), 0 4px 6px -4px rgba($amber-500, 0.1); // hover:shadow-lg hover:shadow-amber-500/10
-    transform: translateY(-0.25rem); // hover:-translate-y-1
+    background-image: linear-gradient(to bottom right, $gray-light, rgba($amber-900, 0.3), rgba($amber-600, 0.2));
+    box-shadow: 0 10px 15px -3px rgba($amber-500, 0.1), 0 4px 6px -4px rgba($amber-500, 0.1);
+    // Optionally disable transform for swipe view
+    // transform: translateY(-0.25rem);
+     @media (min-width: 1024px) {
+        transform: translateY(-0.25rem); // Only apply transform on desktop grid hover
+     }
   }
 }
 
-.cardContent { // Wrapper for content inside card
+.cardContent {
   position: relative;
   z-index: 10;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .cardHeader {
   display: flex;
   align-items: center;
-  margin-bottom: 1rem; // mb-4
+  margin-bottom: 0.75rem; // Reduced margin
 }
 
 .iconContainer {
-  width: 2.5rem; // w-10
-  height: 2.5rem; // h-10
+  width: 2.25rem; // Smaller icon container
+  height: 2.25rem;
   background-color: $gray-600;
-  border-radius: 9999px; // rounded-full
-  margin-right: 1rem; // mr-4
+  border-radius: 9999px;
+  margin-right: 0.75rem; // Reduced margin
   @include flex-center;
-  flex-shrink: 0; // flex-shrink-0
-  border: 1px solid $gray-500; // border border-gray-500
+  flex-shrink: 0;
+  border: 1px solid $gray-500;
+
+  @media (min-width: 1024px) { // Restore desktop size
+      width: 2.5rem;
+      height: 2.5rem;
+      margin-right: 1rem;
+  }
 }
 
 .icon {
-  color: $gray-400; // Default icon color
-  // Size is set on the icon component itself (size={24})
+  color: $gray-400;
+   width: 18px; // Adjust icon size within smaller container
+   height: 18px;
+    @media (min-width: 1024px) { // Restore desktop size
+       width: 24px; // Assuming original lucide size was 24
+       height: 24px;
+   }
 }
 
 .nameTitleWrapper {
@@ -159,21 +294,27 @@ $gray-700: #374151;
 
 .name {
   color: $white;
-  font-weight: 600; // font-semibold
-  font-size: 0.875rem; // text-sm
+  font-weight: 600;
+  font-size: 0.875rem;
 }
 
 .titleText {
   color: $gray-400;
-  font-size: 0.75rem; // text-xs
-  font-weight: 400; // font-normal
-  margin-left: 0.25rem; // ml-1
+  font-size: 0.75rem;
+  font-weight: 400;
+  margin-left: 0.25rem;
 }
 
 .testimonialText {
   color: $gray-300;
-  font-size: 0.75rem; // text-xs
-  line-height: 1.5; // leading-normal
+  font-size: 0.8rem; // Slightly larger base text
+  line-height: 1.6; // Adjust line height
+  flex-grow: 1; // Allow text to take space
+
+  @media (min-width: 1024px) { // Restore desktop size
+      font-size: 0.75rem;
+      line-height: 1.5;
+  }
 }
 
 // Decorative Glow Effect
@@ -188,4 +329,9 @@ $gray-700: #374151;
   right: 0;
   transform: translateY(-50%); // transform -translate-y-1/2
   z-index: 0;
+
+  // ADDED: Hide glow on mobile/tablet
+  @media (max-width: 1023px) {
+     display: none;
+  }
 } 

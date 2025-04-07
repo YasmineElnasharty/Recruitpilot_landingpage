@@ -28,47 +28,52 @@ $dark-shadow: rgba(0,0,0,0.7);
 
 // Section Styles
 .heroSection {
-  padding-top: 3rem;    // pt-12
-  padding-bottom: 4rem; // pb-16
+  padding-top: 3rem;    // Default mobile padding
+  padding-bottom: 4rem; // Default mobile padding
   position: relative;
   overflow: hidden;
-  background-color: $gray-dark; // Now this variable is defined
+  background-color: $gray-dark;
 
-  @media (min-width: 768px) { // md:
+  @media (min-width: 768px) { // md: Tablet and up
     padding-top: 4rem;    // md:pt-16
+    padding-bottom: 5rem; // Increased bottom padding slightly for desktop
   }
+   @media (min-width: 1024px) { // lg: Large Desktop
+     padding-top: 5rem;
+     padding-bottom: 6rem;
+   }
 }
 
 .container {
-  max-width: 1280px; // Adjust if needed
+  max-width: 1280px;
   margin-left: auto;
   margin-right: auto;
   text-align: center;
-  padding-left: 1rem; // px-4
-  padding-right: 1rem; // px-4
+  padding-left: 1rem; // Default mobile padding
+  padding-right: 1rem;
   position: relative;
   z-index: 10;
 
   @media (min-width: 768px) { // md:
-    padding-left: 1.5rem; // md:px-6
-    padding-right: 1.5rem; // md:px-6
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
   }
 }
 
 .headline {
-  font-size: 3.75rem; // text-6xl (approx, adjust as needed)
-  font-weight: 600; // font-semibold
-  margin-bottom: 3rem; // mb-12
-  letter-spacing: -0.025em; // tracking-tight
+  font-size: 2.5rem; // Reduced base size for mobile
+  font-weight: 600;
+  margin-bottom: 2rem; // Reduced mobile margin
+  letter-spacing: -0.025em;
+  line-height: 1.2; // Adjust line height for potentially wrapping text
 
   @media (min-width: 768px) { // md:
-    // font-size: 4.5rem; // md:text-7xl (if needed)
+    font-size: 3.75rem; // text-6xl (UNCHANGED Desktop)
+    margin-bottom: 3rem; // UNCHANGED Desktop margin
+    line-height: 1.1;
   }
 
-  .headlineWhite {
-    color: $white;
-  }
-
+  .headlineWhite { color: $white; }
   .headlineGradient {
     background: linear-gradient(to right, $white, $gray-400);
     -webkit-background-clip: text; // For Safari/Chrome
@@ -78,47 +83,67 @@ $dark-shadow: rgba(0,0,0,0.7);
 }
 
 .subHeadline {
-  max-width: 56rem; // max-w-3xl
+  max-width: 56rem;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 3rem; // mb-12
+  margin-bottom: 2.5rem; // Reduced mobile margin
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.75rem; // space-y-3
+  gap: 0.75rem;
+
+  @media (min-width: 768px) { // md:
+      margin-bottom: 3rem; // UNCHANGED Desktop margin
+  }
 
   p {
     color: $gray-300;
-    font-size: 1rem; // text-base
-    line-height: 1.375; // leading-snug
-    white-space: nowrap; // whitespace-nowrap
+    font-size: 1rem; // text-base (Default)
+    line-height: 1.375;
+    white-space: normal; // << CHANGED: Allow wrapping on mobile
+    max-width: 40rem; // Add max-width to control line length
+
+     @media (max-width: 767px) {
+       font-size: 0.9375rem; // Slightly smaller on mobile
+       line-height: 1.5; // Increase line height slightly for smaller font
+       white-space: normal; // Ensure it wraps
+       text-align: center;
+     }
   }
 }
 
 .ctaContainer {
   display: flex;
-  flex-direction: column; // Default mobile
+  flex-direction: column; // Default mobile (stacks buttons)
   align-items: center;
   justify-content: center;
-  gap: 3rem; // gap-12
+  gap: 2rem; // Reduced mobile gap
 
   @media (min-width: 768px) { // md:
-    flex-direction: row; // md:flex-row
+    flex-direction: row; // UNCHANGED Desktop layout
+    gap: 3rem; // UNCHANGED Desktop gap
   }
 }
 
 .trialButton {
   background-color: $amber-500;
   color: $white;
-  padding: 0.75rem 2rem; // px-8 py-3
-  border-radius: 9999px; // rounded-full
-  font-weight: 500; // font-medium
+  padding: 0.75rem 1.75rem; // Slightly reduced padding for mobile
+  border-radius: 9999px;
+  font-weight: 500;
   transition: background-color 200ms, box-shadow 200ms;
-  min-width: 180px;
-  box-shadow: 0 4px 6px -1px rgba(0,0,0, 0.1), 0 2px 4px -2px rgba(0,0,0, 0.1); // shadow-md
-  text-decoration: none; // Remove default link underline
-  display: inline-flex; // Ensure it behaves like a button
+  min-width: auto; // Remove min-width for mobile
+  box-shadow: 0 4px 6px -1px rgba(0,0,0, 0.1), 0 2px 4px -2px rgba(0,0,0, 0.1);
+  text-decoration: none;
+  display: inline-flex;
   align-items: center;
+  font-size: 0.9375rem; // Adjust base font size slightly
+
+  @media (min-width: 768px) { // md:
+    padding: 0.75rem 2rem; // UNCHANGED Desktop padding
+    min-width: 180px; // UNCHANGED Desktop min-width
+    font-size: 1rem; // Restore desktop font size if changed above
+  }
 
   &:hover {
     background-color: $amber-600;
@@ -144,11 +169,16 @@ $dark-shadow: rgba(0,0,0,0.7);
 .howItWorksButton {
   display: flex;
   align-items: center;
-  gap: 0.75rem; // gap-3
+  gap: 0.75rem;
   color: $white;
-  font-weight: 500; // font-medium
+  font-weight: 500;
   text-decoration: none;
   transition: color 200ms;
+  font-size: 0.9375rem; // Match trial button font size
+
+  @media (min-width: 768px) { // md:
+     font-size: 1rem; // Restore desktop font size
+  }
 
   &:hover {
     color: $gray-300;
@@ -165,45 +195,54 @@ $dark-shadow: rgba(0,0,0,0.7);
 
 .iconContainer {
   position: relative;
-  width: 3rem; // w-12
-  height: 3rem; // h-12
+  width: 2.5rem; // Reduced size for mobile
+  height: 2.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
+
+   @media (min-width: 768px) { // md:
+     width: 3rem; // UNCHANGED Desktop size
+     height: 3rem;
+   }
 }
 
 .outerCircle, .innerCircle {
   position: absolute;
-  border-radius: 9999px; // rounded-full
+  border-radius: 9999px;
   border-style: solid;
   border-width: 1px;
-  // Apply animation directly
   animation: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 .outerCircle {
-  width: 3rem; // w-12
-  height: 3rem; // h-12
+  width: 100%; // Use 100% to match parent container size
+  height: 100%;
   border-color: $gray-500;
   transition: border-color 200ms;
 }
 
 .innerCircle {
-  width: 2rem; // w-8
-  height: 2rem; // h-8
+  width: 66.67%; // Relative size (e.g., 2rem / 3rem or 1.66rem / 2.5rem)
+  height: 66.67%;
   border-color: $gray-600;
   transition: border-color 200ms;
-  animation-delay: 300ms; // animation-delay-300
-  background-color: rgba($gray-700, 0.2); // bg-gray-700/20
-  // backdrop-filter: blur(2px); // backdrop-blur-sm - use with caution for performance
+  animation-delay: 300ms;
+  background-color: rgba($gray-700, 0.2);
 }
 
 .playIcon {
-  width: 11px;
-  height: 13px;
+  // Adjust size relative to container reduction if needed
+  width: 9px;
+  height: 11px;
   fill: $white;
   position: relative;
   z-index: 10;
+
+   @media (min-width: 768px) { // md:
+     width: 11px; // UNCHANGED Desktop size
+     height: 13px;
+   }
 }
 
 .linkText {
@@ -217,40 +256,66 @@ $dark-shadow: rgba(0,0,0,0.7);
 // Chat Interface Image Styles
 .imageContainer {
   position: relative;
-  margin-top: 8rem; // Reduced top margin slightly
-  display: flex; // Added flex to center the frame if max-width is applied
-  justify-content: center; // Center the frame horizontally
+  margin-top: 4rem;
+  display: flex;
+  justify-content: center;
+  perspective: 1500px;
+
+  @media (min-width: 768px) { margin-top: 6rem; }
+  @media (min-width: 1024px) { margin-top: 8rem; }
 }
 
 .glowImage {
   position: absolute;
-  top: -4.5rem; // Adjusted slightly for potentially smaller frame
+  top: -3rem; // Default base value (effectively mobile before this change)
   left: 50%;
   transform: translateX(-50%);
-  width: 70%; // Slightly reduced width relative to smaller frame
-  max-width: 1100px; // Added max-width to limit size (adjust as needed)
-  height: auto; // Maintain aspect ratio
-  z-index: 0; // Same z-index as the old glow
-  pointer-events: none; // Ensure it doesn't interfere with interactions
+  width: 80%; // Mobile width
+  max-width: 1100px;
+  height: auto;
+  z-index: 0;
+  pointer-events: none;
+
+  @media (min-width: 768px) { // md: Desktop styles
+     top: -4.5rem; // Keep Desktop position
+     width: 70%; // Keep Desktop width
+  }
+
+  // --- ADDED Mobile specific top adjustment ---
+  @media (max-width: 767px) {
+     top: -1.5rem; // << MOVED DOWN (Changed from implicit -3rem)
+  }
+  // --- End of added adjustment ---
 }
 
 .imageFrame {
   position: relative;
-  border-radius: 1.5rem; // rounded-3xl
+  border-radius: 1.5rem;
   overflow: hidden;
-  border: 2px solid $gray-600; // border-2 border-gray-600
-  padding: 0.75rem; // Reduced padding slightly
-  background-color: $black; // bg-black
-  z-index: 10; // Above the glow image
-  max-width: 1100px; // Added max-width to limit size (adjust as needed)
-  width: 90%; // Make it take up less horizontal space by default
+  border: 2px solid $gray-600;
+  padding: 0.5rem;
+  background-color: $black;
+  z-index: 10;
+  max-width: 1100px;
+  width: 95%;
+  transform-origin: bottom center;
+  transform: rotateX(var(--scroll-rotate-x, 15deg));
+
+  @media (min-width: 768px) { // md:
+    padding: 0.75rem;
+    width: 90%;
+  }
 }
 
 .chatImage {
-  width: 100%; // w-full - will fill the smaller frame
-  height: auto; // h-auto
-  display: block; // display:block
-  border-radius: 1.125rem; // Adjusted inner radius for reduced padding
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: calc(1.5rem - 0.5rem); // Adjusted inner radius based on mobile padding
+  
+  @media (min-width: 768px) { // md:
+     border-radius: calc(1.5rem - 0.75rem); // UNCHANGED Desktop inner radius calculation
+  }
 }
 
 // Bottom Glow Effect
@@ -258,11 +323,19 @@ $dark-shadow: rgba(0,0,0,0.7);
   position: absolute;
   width: 800px;
   height: 300px;
-  border-radius: 9999px; // rounded-full
-  background-color: rgba($amber-500, 0.1); // bg-amber-500/10
-  filter: blur(120px); // blur-[120px]
-  top: 85%;
+  border-radius: 9999px;
+  background-color: rgba($amber-500, 0.1);
+  filter: blur(120px);
+  top: 85%; // Position relative to section height
   left: 50%;
-  transform: translate(-50%, -50%); // transform -translate-x-1/2 -translate-y-1/2
-  z-index: -1; // Behind content
+  transform: translate(-50%, -50%);
+  z-index: -1;
+
+  // ADDED: Reduce size/intensity or hide on mobile
+  @media (max-width: 767px) {
+    width: 90%; // Use percentage width
+    height: 200px; // Reduce height
+    filter: blur(90px); // Reduce blur
+    top: 90%; // Adjust vertical position
+  }
 } 

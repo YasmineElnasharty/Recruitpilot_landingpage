@@ -20,6 +20,11 @@ $link-color: #f59e0b;
   min-height: 100vh;
   width: 100%;
   overflow: hidden; // Prevent scrollbars on the main container
+
+  // ADDED: Stack columns on smaller screens
+  @media (max-width: 767px) {
+    flex-direction: column;
+  }
 }
 
 // --- Left Column (Form) ---
@@ -28,11 +33,27 @@ $link-color: #f59e0b;
   background-color: $bg-light;
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 2rem 2rem; // Reduced top/bottom padding
+  align-items: center; // Center vertically by default
+  padding: 2rem 2rem; // Default padding (Desktop)
 
   @media (min-width: 768px) {
-    flex-basis: 50%;
+    flex-basis: 50%; // UNCHANGED Desktop style
+    // align-items: center; // Keep centered on desktop
+  }
+
+  // Mobile styles
+  @media (max-width: 767px) {
+    order: 1; // << CHANGED: Form comes first on mobile
+    padding: 2rem 1.5rem; // Adjust padding for mobile
+    width: 100%;
+    flex-basis: auto; // Reset basis for vertical stacking
+    align-items: flex-start; // Align form container to top on mobile
+    flex-grow: 1; // Allow form section to grow
+  }
+
+  // Smaller screen padding adjustment
+  @media (max-width: 480px) {
+    padding: 1.5rem 1rem; // Further reduce padding on very small screens
   }
 }
 
@@ -104,13 +125,20 @@ $link-color: #f59e0b;
 }
 
 .form {
-  // Form specific layout if needed
+  width: 100%; // Ensure form takes full width within container (applies to all sizes, likely no change)
 }
 
 .nameFields {
   display: flex;
   gap: 1rem;
   margin-bottom: 0.75rem;
+
+  // ADDED: Stack name fields on very small screens
+  @media (max-width: 480px) {
+    flex-direction: column;
+    gap: 0.75rem; // Keep consistent gap when stacked
+    // margin-bottom: 0.75rem; // Keep original margin
+  }
 }
 
 .fieldGroup {
@@ -150,19 +178,31 @@ $link-color: #f59e0b;
 
 .agreement {
   display: flex;
-  align-items: center;
+  align-items: center; // Default vertical alignment (Desktop)
   margin-top: 1rem;
   margin-bottom: 1rem;
+
+  // ADDED: Mobile-specific alignment and spacing
+  @media (max-width: 767px) {
+     align-items: flex-start; // Better alignment if text wraps on mobile
+     gap: 0.5rem; // Use gap for spacing on mobile
+  }
 }
 
 .checkbox {
   width: 1rem;
   height: 1rem;
-  margin-right: 0.5rem;
+  margin-right: 0.5rem; // Default spacing (Desktop)
   border-radius: 0.25rem;
   border-color: $divider-color;
   cursor: pointer;
-  flex-shrink: 0; // Prevent checkbox from shrinking
+  flex-shrink: 0;
+
+  // ADDED: Mobile-specific adjustments
+  @media (max-width: 767px) {
+    margin-top: 0.15rem; // Align checkbox slightly better with text start on mobile
+    margin-right: 0; // Remove margin-right when using gap on mobile
+  }
 }
 
 .checkboxLabel {
@@ -202,22 +242,29 @@ $link-color: #f59e0b;
 
 // --- Right Column (Info/Logo) ---
 .rightColumn {
-  flex: 1; // Takes up half the space initially
+  // Base styles
   background-color: $bg-dark;
   display: flex;
-  flex-direction: column; // Stack content vertically
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 4rem 2rem; // Add padding
+  padding: 4rem 2rem; // Default padding (Desktop)
   text-align: center;
 
   @media (min-width: 768px) {
-    flex-basis: 50%; // Explicitly set basis on larger screens
+    // UNCHANGED Desktop styles
+    flex: 1;
+    flex-basis: 50%;
   }
 
-  // Hide on smaller screens if desired based on the screenshot look
+  // Mobile styles
    @media (max-width: 767px) {
-     display: none;
+     order: 2; // << CHANGED: Dark section comes second on mobile
+     padding: 2rem 1.5rem; // Reduced padding for mobile footer view
+     width: 100%; // Ensure full width
+     flex-basis: auto; // Reset basis
+     flex-grow: 0; // Don't allow it to grow vertically
+     // min-height: unset; // Remove fixed min-height if set previously
    }
 }
 
@@ -226,35 +273,63 @@ $link-color: #f59e0b;
 }
 
 .logoContainer {
-  margin-bottom: 3rem; // mb-12 or adjust
+  margin-bottom: 3rem; // Default margin (Desktop)
+
+  // ADDED: Mobile margin adjustment
+  @media (max-width: 767px) {
+    margin-bottom: 1.5rem; // Reduce margin on mobile
+  }
 }
 
 .logoImage {
-  // Styles applied via props, can add max-height etc. here if needed
+  // Base styles applied via props
+
+  // ADDED: Mobile logo size adjustment (optional)
+  @media (max-width: 767px) {
+    width: 250px; // Example size, adjust as necessary
+    height: auto; // Maintain aspect ratio
+  }
 }
 
 .communityTitle {
-  font-size: 1.5rem; // text-2xl
-  font-weight: 600; // font-semibold
+  font-size: 1.5rem; // text-2xl (Desktop)
+  font-weight: 600;
   color: $text-light;
-  margin-bottom: 1rem; // mb-4
+  margin-bottom: 1rem;
+
+  // ADDED: Mobile font size adjustment
+  @media (max-width: 767px) {
+    font-size: 1.25rem; // Slightly smaller title on mobile
+    margin-bottom: 0.75rem;
+  }
 }
 
 .communityText {
-  font-size: 0.875rem; // text-sm
+  font-size: 0.875rem; // text-sm (Desktop)
   color: $text-gray-light;
-  margin-bottom: 2rem; // mb-8
+  margin-bottom: 2rem;
   line-height: 1.6;
+
+   // ADDED: Mobile font size and margin adjustment
+   @media (max-width: 767px) {
+     font-size: 0.8rem; // Slightly smaller text
+     margin-bottom: 1.5rem; // Reduce margin
+  }
 }
 
 .signInText {
-  font-size: 0.875rem; // text-sm
+  font-size: 0.875rem; // text-sm (Desktop)
   color: $text-gray-light;
+
+  // ADDED: Mobile font size adjustment
+  @media (max-width: 767px) {
+     font-size: 0.8rem; // Slightly smaller text
+  }
 }
 
 .signInLink {
   color: $link-color;
-  font-weight: 600; // font-semibold
+  font-weight: 600;
   margin-left: 0.25rem;
 
   &:hover {

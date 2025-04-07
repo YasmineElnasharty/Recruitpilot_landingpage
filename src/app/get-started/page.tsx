@@ -70,10 +70,10 @@ const SignInPage = () => {
         <div className={styles.rightContent}>
           <div className={styles.logoContainer}> {/* Renamed container class for clarity */}
             <Image
-              src="/logo.png" // Use the logo image path
+              src="/img.png" // Use the logo image path
               alt="RecruitPilot AI Logo" // Update alt text
-              width={400} // Use same dimensions as Sign Up page logo
-              height={100} // Use same dimensions as Sign Up page logo
+              width={200} // Use same dimensions as Sign Up page logo
+              height={90} // Use same dimensions as Sign Up page logo
               className={styles.logoImage} // Use logo specific class
               priority
             />
@@ -83,7 +83,7 @@ const SignInPage = () => {
             Join thousands of users who trust our platform for their daily needs. Start your journey today.
           </p>
           <p className={styles.signUpText}>
-            Don't have an account? <Link href="/signup" className={styles.signUpLink}>Sign Up</Link>
+            Don&apos;t have an account? <Link href="/signup" className={styles.signUpLink}>Sign Up</Link>
           </p>
         </div>
       </div>

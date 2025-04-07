@@ -6,6 +6,9 @@ $white: #fff;
 $gray-300: #d1d5db;
 $gray-700: #374151;
 $gray-dark: #111111;
+$mobile-menu-bg: $gray-dark; // Or slightly different if needed
+$mobile-menu-text: $white;
+$mobile-menu-border: $gray-700;
 
 // Header Styles
 .header {
@@ -14,6 +17,17 @@ $gray-dark: #111111;
   padding-top: 1.5rem; // py-6
   padding-bottom: 1.5rem; // py-6
   background-color: $gray-dark;
+  z-index: 50; // Ensure header is above other content
+
+  // Prevent body scroll when mobile menu is open
+  &.mobileMenuOpenState {
+    // If using an overlay approach, you might apply overflow: hidden to body via JS
+  }
+
+  @media (max-width: 767px) {
+     padding-top: 1rem; // Reduce padding slightly on mobile
+     padding-bottom: 1rem;
+  }
 }
 
 // Container
@@ -31,12 +45,18 @@ $gray-dark: #111111;
     padding-left: 1.5rem; // md:px-6
     padding-right: 1.5rem; // md:px-6
   }
+
+   @media (max-width: 767px) {
+      padding-left: 1rem;
+      padding-right: 1rem;
+   }
 }
 
 // Logo Area
 .logoArea {
   display: flex;
   align-items: center;
+  z-index: 60; // Ensure logo is above mobile nav when closed
 }
 
 .logoLink {
@@ -48,6 +68,12 @@ $gray-dark: #111111;
   // Specific image styles like filter applied inline
   // width and height are directly on the Image component props
   filter: brightness(1.15);
+
+  // Optional: Adjust logo size on mobile
+  @media (max-width: 767px) {
+     width: 180px; // Example smaller width
+     height: auto; // Adjust height automatically
+  }
 }
 
 // Navigation
@@ -58,6 +84,49 @@ $gray-dark: #111111;
     display: flex; // md:flex
     align-items: center;
     gap: 2.5rem; // space-x-10
+    // Ensure mobile-only elements are hidden on desktop
+    .mobileMenuToggle.closeButtonInside,
+    .mobileNavActions {
+        display: none;
+    }
+  }
+
+  // --- Mobile Navigation Active State ---
+  &.mobileNavActive {
+    display: flex; // Show the nav container
+    flex-direction: column;
+    position: fixed; // Or absolute, depending on desired behavior
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh; // Full screen height
+    background-color: $mobile-menu-bg;
+    padding: 4rem 1.5rem 2rem; // Add padding (top padding accounts for potential header height or close button)
+    gap: 1.5rem; // Space out links vertically
+    align-items: flex-start; // Align links to the left
+    z-index: 55; // Ensure nav is above content but below toggle/logo if needed
+    overflow-y: auto; // Allow scrolling if content overflows
+
+    // Show the close button inside when active
+    .mobileMenuToggle.closeButtonInside {
+        display: block;
+    }
+
+    // Style links specifically for mobile menu
+    .navLink {
+      font-size: 1.125rem; // Larger font size for mobile nav
+      color: $gray-300;
+      padding: 0.5rem 0; // Add some vertical padding
+      width: 100%; // Make links take full width
+
+      &:hover {
+        color: $white;
+      }
+      &.active {
+        color: $amber-500;
+        &:hover { color: $amber-400; }
+      }
+    }
   }
 }
 
@@ -66,6 +135,7 @@ $gray-dark: #111111;
   font-weight: 600; // font-semibold
   color: $gray-300;
   transition: color 200ms;
+  text-decoration: none;
 
   &:hover {
     color: $white;
@@ -84,6 +154,10 @@ $gray-dark: #111111;
   display: flex;
   align-items: center;
   gap: 1rem; // space-x-4
+
+  @media (max-width: 767px) { // Hide on mobile
+    display: none;
+  }
 }
 
 // Sign Up Button
@@ -116,7 +190,7 @@ $gray-dark: #111111;
   color: $white;
   padding: 0.5rem 1rem; // px-4 py-2
   border-radius: 9999px; // rounded-full
-  display: flex;
+  display: inline-flex; // Ensure flex layout for parent
   align-items: center;
   transition: background-color 200ms;
   font-weight: 500; // font-medium
@@ -132,10 +206,60 @@ $gray-dark: #111111;
   }
 
   .arrow {
-    margin-left: 0.25rem; // ml-1
-    color: $white;
-    font-weight: 600; // font-semibold
+    margin-left: 0.25rem;
+    color: $white; // This sets the stroke color via stroke="currentColor"
+    display: inline-flex;
+    align-items: center;
+
+    svg {
+      width: 1em; // Keep size relative to font
+      height: 1em;
+      // stroke-width: 2; // Can be set here instead of SVG attribute if preferred
+    }
   }
+}
+
+// --- Mobile Menu Toggle ---
+.mobileMenuToggle {
+  display: none; // Hide by default
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  color: $white; // Icon color
+  z-index: 60; // Ensure toggle is above mobile nav
+
+  @media (max-width: 767px) { // Show only on mobile
+    display: block;
+  }
+
+  // Hide the close button inside the nav by default
+  &.closeButtonInside {
+     display: none;
+     position: absolute;
+     top: 1rem;
+     right: 1rem;
+     padding: 0.5rem; // Add padding for easier tapping
+  }
+}
+
+// --- Action buttons inside Mobile Nav ---
+.mobileNavActions {
+    display: flex;
+    flex-direction: column; // Stack buttons vertically
+    gap: 1rem; // Space between buttons
+    margin-top: 2rem; // Space above buttons
+    padding-top: 1.5rem; // Space above buttons
+    border-top: 1px solid $mobile-menu-border; // Separator line
+    width: 100%; // Take full width
+
+    // Reuse existing button styles, adjust alignment if needed
+    .signUpButton, .getStartedButton {
+       justify-content: center; // Center text/icon in button
+       width: 100%; // Make buttons full width
+       padding-top: 0.75rem;
+       padding-bottom: 0.75rem;
+    }
 }
 
 // Bottom Border Gradient
@@ -146,4 +270,5 @@ $gray-dark: #111111;
   right: 0;
   height: 1px; // h-px
   background: linear-gradient(to right, $gray-dark, $gray-700, $gray-dark); // bg-gradient-to-r from-[#111111] via-gray-700 to-[#111111]
+  z-index: 1; // Ensure border is behind content if header is relative
 } 

@@ -1,5 +1,9 @@
+"use client"; // Make sure client component directive is present
+
 import { User, UserSquare } from 'lucide-react';
 import styles from './TestimonialsSection.module.scss'; // Import the SCSS module
+import { useState } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 // Function to guess gender (very basic) - icons styled via SCSS now
 const getIconBasedOnName = (name: string) => {
@@ -47,6 +51,35 @@ const TestimonialsSection = () => {
     { id: 8, name: 'Carlos S.', title: 'Lead Recruiter', testimonial: `The screening question creator helped us weed out mismatches early in the process.`}
   ];
 
+  // State for active index
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Navigation functions
+  const goToPrevious = () => {
+    const isFirstSlide = currentIndex === 0;
+    const newIndex = isFirstSlide ? testimonials.length - 1 : currentIndex - 1;
+    setCurrentIndex(newIndex);
+  };
+
+  const goToNext = () => {
+    const isLastSlide = currentIndex === testimonials.length - 1;
+    const newIndex = isLastSlide ? 0 : currentIndex + 1;
+    setCurrentIndex(newIndex);
+  };
+
+  // Function to determine dynamic class based on position relative to current index
+  const getCardClass = (index: number) => {
+    const pos = index - currentIndex;
+    if (pos === 0) return styles.isActive;
+    if (pos === -1) return styles.isPrevious;
+    if (pos === 1) return styles.isNext;
+    // Add classes for cards further away if needed for smoother transitions or different styles
+    if (pos < -1) return styles.isFarPrevious;
+    if (pos > 1) return styles.isFarNext;
+    return ''; // Default empty class
+  };
+
+  // Split for desktop view remains the same
   const firstRow = testimonials.slice(0, 4);
   const secondRow = testimonials.slice(4, 8);
 
@@ -64,8 +97,45 @@ const TestimonialsSection = () => {
           </h2>
         </div>
 
-        {/* First row */}
-        {/* Apply SCSS grid class */}
+        {/* --- Mobile Stacked/Cover Flow Container --- */}
+        {/* Renamed container class for clarity */}
+        <div className={styles.mobileStackedContainer}>
+           {/* Renamed track class for clarity */}
+           <div className={styles.mobileStackedTrack}>
+              {/* Render ALL testimonials for positioning */}
+              {testimonials.map((testimonial, index) => (
+                // Apply dynamic classes for positioning/styling
+                <div key={`mobile-${testimonial.id}`} className={`${styles.mobileCardWrapper} ${getCardClass(index)}`}>
+                   <TestimonialCard
+                      name={testimonial.name}
+                      title={testimonial.title}
+                      testimonial={testimonial.testimonial}
+                    />
+                </div>
+              ))}
+           </div>
+           {/* --- Navigation Controls Below --- */}
+           {/* Keep the sliderControls div for layout */}
+           <div className={styles.sliderControls}>
+              <button
+                onClick={goToPrevious}
+                className={`${styles.arrowButton} ${styles.arrowLeft}`}
+                aria-label="Previous testimonial"
+              >
+                <ChevronLeft size={24} />
+              </button>
+              <button
+                onClick={goToNext}
+                className={`${styles.arrowButton} ${styles.arrowRight}`}
+                aria-label="Next testimonial"
+              >
+                <ChevronRight size={24} />
+              </button>
+           </div>
+        </div>
+        {/* --- End Mobile Container --- */}
+
+        {/* --- Desktop Grid (Hidden on Mobile/Tablet) --- */}
         <div className={`${styles.grid} ${styles.firstRow}`}>
           {firstRow.map((testimonial) => (
             <TestimonialCard
@@ -76,10 +146,7 @@ const TestimonialsSection = () => {
             />
           ))}
         </div>
-
-        {/* Second row */}
-        {/* Apply SCSS grid class */}
-        <div className={`${styles.grid} ${styles.secondRow}`}> {/* Added secondRow class if needed for alignment */}
+        <div className={`${styles.grid} ${styles.secondRow}`}>
            {secondRow.map((testimonial) => (
             <TestimonialCard
               key={testimonial.id}
@@ -89,6 +156,8 @@ const TestimonialsSection = () => {
             />
           ))}
         </div>
+         {/* --- End Desktop Grid --- */}
+
       </div>
 
       {/* Amber glow effect */}

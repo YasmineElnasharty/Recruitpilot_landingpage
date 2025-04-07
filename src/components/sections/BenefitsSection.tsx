@@ -1,6 +1,10 @@
-import { MessageCircle, Target, Zap, FileBadge, Settings, Users } from 'lucide-react';
+"use client"; // Ensure this is present
+
+// import { MessageCircle, Target, Zap, FileBadge, Settings, Users } from 'lucide-react';
 import Image from 'next/image';
 import styles from './BenefitsSection.module.scss'; // Import the SCSS module
+import { useState } from 'react'; // Import useState
+import { ChevronLeft, ChevronRight } from 'lucide-react'; // Import icons for arrows
 
 const BenefitCard = ({ imageUrl, title, description }: { imageUrl: string, title: string, description: string }) => {
   return (
@@ -63,6 +67,23 @@ const BenefitsSection = () => {
     }
   ];
 
+  // --- State for Slider ---
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // --- Navigation Functions ---
+  const goToPrevious = () => {
+    const isFirstSlide = currentIndex === 0;
+    const newIndex = isFirstSlide ? benefits.length - 1 : currentIndex - 1;
+    setCurrentIndex(newIndex);
+  };
+
+  const goToNext = () => {
+    const isLastSlide = currentIndex === benefits.length - 1;
+    const newIndex = isLastSlide ? 0 : currentIndex + 1;
+    setCurrentIndex(newIndex);
+  };
+  // --- End Slider Logic ---
+
   return (
     <section className={styles.benefitsSection}>
       <div className={styles.container}>
@@ -79,16 +100,59 @@ const BenefitsSection = () => {
           </h2>
         </div>
 
-        {/* Benefits Grid */}
+        {/* --- Grid for Desktop / Slider Wrapper for Mobile --- */}
+        {/* The 'grid' class will now mainly apply > 768px */}
         <div className={styles.grid}>
-          {benefits.map((benefit) => (
-            <BenefitCard
-              key={benefit.id}
-              imageUrl={benefit.imageUrl}
-              title={benefit.title}
-              description={benefit.description}
-            />
-          ))}
+           {/* --- Mobile Slider Structure --- */}
+           <div className={styles.sliderContainer}> {/* Added for mobile */}
+              <div
+                 className={styles.sliderTrack}
+                 // Apply transform based on currentIndex
+                 style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+               >
+                 {benefits.map((benefit) => (
+                   <div key={benefit.id} className={styles.slide}> {/* Added wrapper */}
+                     {/* Render the existing card component */}
+                     <BenefitCard
+                       imageUrl={benefit.imageUrl}
+                       title={benefit.title}
+                       description={benefit.description}
+                     />
+                   </div>
+                 ))}
+               </div>
+
+               {/* --- NEW: Wrapper for Arrow Buttons --- */}
+               <div className={styles.sliderControls}>
+                  <button
+                    onClick={goToPrevious}
+                    className={`${styles.arrowButton} ${styles.arrowLeft}`}
+                    aria-label="Previous benefit"
+                  >
+                    <ChevronLeft size={24} />
+                  </button>
+                  <button
+                    onClick={goToNext}
+                    className={`${styles.arrowButton} ${styles.arrowRight}`}
+                    aria-label="Next benefit"
+                  >
+                    <ChevronRight size={24} />
+                  </button>
+               </div>
+               {/* --- End Wrapper --- */}
+           </div>
+
+           {/* --- Desktop Grid Rendering (Hidden on Mobile) --- */}
+           {/* This maps the cards again, but they will only be visible via the grid layout on desktop */}
+           {benefits.map((benefit) => (
+             <div key={`desktop-${benefit.id}`} className={styles.desktopCardWrapper}>
+                <BenefitCard
+                  imageUrl={benefit.imageUrl}
+                  title={benefit.title}
+                  description={benefit.description}
+                />
+             </div>
+           ))}
         </div>
       </div>
 

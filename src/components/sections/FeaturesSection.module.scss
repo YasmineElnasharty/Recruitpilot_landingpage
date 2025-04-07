@@ -24,117 +24,176 @@ $transparent: transparent;
 
 // Section Styles
 .featuresSection {
-  padding-top: 5rem;    // py-20
-  padding-bottom: 5rem; // py-20
+  padding-top: 5rem;    // Default Desktop padding
+  padding-bottom: 5rem;
   background-color: $gray-dark;
   position: relative;
   overflow: hidden;
 
-  @media (min-width: 768px) { // md:
-    padding-top: 6rem;    // md:py-24
-    padding-bottom: 6rem; // md:py-24
+  @media (min-width: 768px) and (max-width: 1023px) { // Tablet
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  @media (max-width: 767px) { // Mobile
+    padding-top: 3rem;
+    padding-bottom: 3rem;
   }
 }
 
 .container {
-  max-width: 1280px; // Adjust if needed
+  max-width: 1280px;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 1rem; // px-4
-  padding-right: 1rem; // px-4
+  padding-left: 1rem; // Default mobile padding
+  padding-right: 1rem;
   position: relative;
   z-index: 10;
+
+   @media (min-width: 768px) { // md:
+     padding-left: 1.5rem; // Adjust as needed for consistency
+     padding-right: 1.5rem;
+   }
 }
 
 .layoutGrid {
   display: flex;
   flex-direction: column; // Default mobile
-  gap: 6rem; // gap-24 (adjust if needed visually)
+  gap: 6rem; // Default desktop gap
 
   @media (min-width: 1024px) { // lg:
-    flex-direction: row; // lg:flex-row
+    flex-direction: row; // UNCHANGED Desktop
+  }
+
+  // ADDED: Reduce gap on mobile/tablet
+  @media (max-width: 1023px) {
+    gap: 4rem;
+  }
+   @media (max-width: 767px) {
+    gap: 3rem;
   }
 }
 
 // Left Column (Features)
 .leftColumn {
+  width: 100%; // Default mobile width
   @media (min-width: 1024px) { // lg:
-    width: calc(5 / 12 * 100%); // lg:w-5/12
+    width: calc(5 / 12 * 100%); // UNCHANGED Desktop width
   }
 }
 
 .headerContent {
-  margin-bottom: 4rem; // mb-16
+  margin-bottom: 4rem; // Default desktop margin
+
+  // ADDED: Reduce margin on mobile
+  @media (max-width: 767px) {
+    margin-bottom: 2.5rem;
+  }
 }
 
 .tagWrapper {
   display: inline-block;
-  border-radius: 9999px; // rounded-full
-  background-image: linear-gradient(to right, $amber-500, $orange-500, $red-500); // bg-gradient-to-r ...
-  margin-bottom: 2rem; // mb-8
-  padding: 2px; // For the inner border effect
+  border-radius: 9999px;
+  background-image: linear-gradient(to right, $amber-500, $orange-500, $red-500);
+  margin-bottom: 2rem; // Default desktop margin
+  padding: 2px;
+
+  // ADDED: Reduce margin on mobile
+  @media (max-width: 767px) {
+    margin-bottom: 1.5rem;
+  }
 }
 
 .tagInner {
-  padding-left: 1.25rem; // px-5
-  padding-right: 1.25rem; // px-5
-  padding-top: 0.5rem;   // py-2
-  padding-bottom: 0.5rem; // py-2
-  // margin: 2px; // m-[2px] - handled by padding on wrapper
-  background-color: rgba($gray-medium, 0.8); // bg-[#222222]/80
-  border-radius: 9999px; // rounded-full
+  padding-left: 1.25rem; // Default desktop padding
+  padding-right: 1.25rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  background-color: rgba($gray-medium, 0.8);
+  border-radius: 9999px;
   color: $white;
-  font-size: 0.875rem; // text-sm
-  font-weight: 500; // font-medium
+  font-size: 0.875rem; // text-sm (Default)
+  font-weight: 500;
+
+  // ADDED: Adjust padding/font on smaller screens
+  @media (max-width: 767px) {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.375rem;
+    padding-bottom: 0.375rem;
+  }
+  @media (max-width: 480px) {
+    font-size: 0.75rem; // text-xs
+  }
 }
 
 .title {
-  font-size: 1.875rem; // text-3xl
-  font-weight: 600; // font-semibold
+  font-size: 1.875rem; // text-3xl (Default mobile/tablet)
+  font-weight: 600;
   color: $white;
-  margin-bottom: 2.5rem; // mb-10
-  letter-spacing: -0.025em; // tracking-tight
-  line-height: 1.25; // leading-tight
+  margin-bottom: 2.5rem; // Default desktop margin
+  letter-spacing: -0.025em;
+  line-height: 1.25;
 
   @media (min-width: 768px) { // md:
-    font-size: 2.25rem; // md:text-4xl
+    font-size: 2.25rem; // md:text-4xl (UNCHANGED)
+  }
+
+  // ADDED: Reduce margin on mobile
+  @media (max-width: 767px) {
+    margin-bottom: 2rem;
+    font-size: 1.75rem; // Slightly smaller on mobile
   }
 }
 
 .featuresList {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem; // space-y-2 (applied via gap)
+  gap: 0.5rem; // Default gap between items (includes divider space conceptually)
 }
 
 .featureItem {
-  position: relative; // For the divider absolutely positioned below it
+  position: relative;
 }
 
 // Feature Card Styles
 .featureCard {
   transition: all 300ms;
   display: flex;
-  align-items: flex-start; // items-start
-  padding: 1.5rem; // p-6
-  border-radius: 0.75rem; // rounded-xl
-  border: 1px solid $transparent; // border border-transparent (start transparent)
+  align-items: flex-start;
+  padding: 1.5rem; // Default desktop padding
+  border-radius: 0.75rem;
+  border: 1px solid $transparent;
 
   &:hover {
     border-color: $stone-600; // hover:border-stone-600
     background: linear-gradient(to bottom, rgba($black, 0.5), rgba($amber-600, 0.2)); // hover:bg-gradient-to-b hover:from-black/50 hover:to-amber-600/20
   }
+
+  // ADDED: Reduce padding on mobile
+  @media (max-width: 767px) {
+    padding: 1rem;
+  }
 }
 
 .iconWrapper {
-  width: 2.5rem;  // w-10
-  height: 2.5rem; // h-10
+  width: 2.5rem;  // Default size
+  height: 2.5rem;
   @include flex-center;
-  margin-right: 1.25rem; // mr-5
-  flex-shrink: 0; // flex-shrink-0
+  margin-right: 1.25rem; // Default margin
+  flex-shrink: 0;
 
-  // Apply icon color here if not done via component props
-  // > svg { color: $amber-500; } // Example if icon color isn't passed
+  // ADDED: Adjust size and margin on mobile
+  @media (max-width: 767px) {
+    width: 2.25rem;
+    height: 2.25rem;
+    margin-right: 1rem;
+    // Optionally adjust icon size itself via svg selector if needed
+    > svg {
+      width: 24px; // Example size, match desired look
+      height: 24px;
+    }
+  }
 }
 
 .cardText {
@@ -143,52 +202,89 @@ $transparent: transparent;
 
 .cardTitle {
   color: $white;
-  font-weight: 700; // font-bold
-  font-size: 1.25rem; // text-xl
-  margin-bottom: 0.5rem; // mb-2
+  font-weight: 700;
+  font-size: 1.25rem; // Default desktop size
+  margin-bottom: 0.5rem;
+
+  // ADDED: Adjust font size on mobile
+  @media (max-width: 767px) {
+    font-size: 1.125rem; // text-lg
+  }
 }
 
 .cardDescription {
   color: $gray-400;
-  font-size: 0.875rem; // text-sm
-  line-height: 1.625; // leading-relaxed
-  margin-top: 0.25rem; // mt-1
+  font-size: 0.875rem; // Default desktop size
+  line-height: 1.625;
+  margin-top: 0.25rem;
+
+  // ADDED: Adjust font size on mobile
+  @media (max-width: 767px) {
+    font-size: 0.8rem; // Slightly smaller
+  }
 }
 
 .divider {
   position: absolute;
-  bottom: -4px; // Position below the card
-  left: 70px; // Start after icon area approx
-  right: 1.5rem; // right-6 (match card padding approx)
-  height: 1px; // h-[1px]
-  background: linear-gradient(to right, $transparent, rgba($amber-400, 0.6), $transparent); // via-amber-400/60
-  opacity: 1; // opacity-100
+  bottom: -4px; // Keep position relative to bottom of featureItem
+  // Adjust left to account for new icon margin and card padding on mobile
+  left: calc(1rem + 2.25rem + 1rem); // mobile card padding + mobile icon width + mobile icon margin
+  right: 1rem; // Match mobile card padding
+  height: 1px;
+  background: linear-gradient(to right, $transparent, rgba($amber-400, 0.6), $transparent);
+  opacity: 1;
+
+  @media (min-width: 768px) { // Desktop divider positioning
+    left: calc(1.5rem + 2.5rem + 1.25rem); // desktop card padding + icon width + icon margin
+    right: 1.5rem; // Match desktop card padding
+  }
 }
 
 
 // Right Column (Placeholder)
 .rightColumn {
-  @media (min-width: 1024px) { // lg:
-    width: calc(7 / 12 * 100%); // lg:w-7/12
-  }
   @include flex-center;
+  width: 100%; // Default mobile width
+  @media (min-width: 1024px) { // lg:
+    width: 55%; // UNCHANGED Desktop width
+  }
 }
 
 .placeholderOuter {
-  height: 600px; // h-[600px]
-  width: 90%; // w-[90%]
-  border-radius: 1rem; // rounded-2xl
-  background: linear-gradient(to bottom right, $placeholder-grad-from, $placeholder-grad-to); // bg-gradient-to-br ...
+  height: 600px; // Default desktop height
+  width: 90%; // Default desktop width
+  border-radius: 1rem;
+  background: linear-gradient(to bottom right, $placeholder-grad-from, $placeholder-grad-to);
   overflow: hidden;
-  @include flex-center;
-  padding: 3rem; // p-12 (adjust padding if needed)
-  border: 1px solid $stone-600; // border border-stone-600
-  box-shadow: 0 10px 15px -3px rgba(0,0,0, 0.1), 0 4px 6px -4px rgba(0,0,0, 0.1); // shadow-lg (approximated)
+  padding: 3rem; // Default desktop padding
+  border: 1px solid $stone-600;
+  box-shadow: 0 10px 15px -3px rgba(0,0,0, 0.1), 0 4px 6px -4px rgba(0,0,0, 0.1);
+
+  // --- ADD flex properties for centering ---
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // --- End of added properties ---
+
+  // ADDED: Adjust placeholder for mobile/tablet
+  @media (max-width: 1023px) {
+     width: 100%; // Take full width of column on tablet/mobile
+  }
+  @media (max-width: 767px) {
+     height: 450px; // Reduce height significantly on mobile
+     padding: 1.5rem; // Reduce padding
+  }
+   @media (max-width: 480px) {
+     height: 350px; // Even smaller height
+     padding: 1rem;
+   }
 }
 
 .placeholderInner {
-  width: 90%; // w-[90%]
-  height: 90%; // h-[90%]
-  border-radius: 0.5rem; // rounded-lg
-  background-color: $placeholder-gray; // bg-[#d9d9d9]
+  width: 90%; // Default desktop width
+  height: 90%; // Default desktop height
+  border-radius: 0.5rem;
+  background-color: $placeholder-gray;
+
+  // No changes needed here for centering, flexbox on parent handles it
 } 

@@ -20,96 +20,240 @@ $amber-600: #d97706; // For gradient
 
 // Section Styles
 .benefitsSection {
-  padding-top: 3rem;    // py-12
-  padding-bottom: 3rem; // py-12
+  padding-top: 3rem;    // Default mobile padding
+  padding-bottom: 3rem;
   background-color: $gray-dark;
   position: relative;
   overflow: hidden;
 
   @media (min-width: 768px) { // md:
-    padding-top: 4rem;    // md:py-16
-    padding-bottom: 4rem; // md:py-16
+    padding-top: 4rem;    // UNCHANGED Desktop padding
+    padding-bottom: 4rem;
+  }
+
+  // ADDED: Further reduce padding on very small screens
+  @media (max-width: 480px) {
+     padding-top: 2.5rem;
+     padding-bottom: 2.5rem;
   }
 }
 
 .container {
-  max-width: 1280px; // Adjust if needed
+  max-width: 1280px;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 1rem; // px-4
-  padding-right: 1rem; // px-4
+  padding-left: 1rem; // Default mobile padding
+  padding-right: 1rem;
   position: relative;
   z-index: 10;
+
+  // ADDED: Adjust padding slightly for different mobile sizes if needed
+   @media (max-width: 480px) {
+      padding-left: 1rem; // Keep 1rem or adjust
+      padding-right: 1rem;
+   }
 }
 
 // Section Header
 .header {
-  margin-bottom: 3rem; // mb-12
+  margin-bottom: 3rem; // Default mobile margin
   text-align: center;
+
+  // ADDED: Reduce margin on smaller screens
+  @media (max-width: 767px) {
+     margin-bottom: 2.5rem;
+  }
 }
 
 .tagWrapper {
   display: inline-block;
-  border-radius: 9999px; // rounded-full
-  background-image: linear-gradient(to right, $amber-500, $orange-500, $red-500); // bg-gradient-to-r ...
-  margin-bottom: 1.5rem; // mb-6
-  padding: 2px; // For the inner border effect
+  border-radius: 9999px;
+  background-image: linear-gradient(to right, $amber-500, $orange-500, $red-500);
+  margin-bottom: 1.5rem; // Default mobile margin
+  padding: 2px;
+
+  // ADDED: Reduce margin on smaller screens
+  @media (max-width: 767px) {
+     margin-bottom: 1rem;
+  }
 }
 
 .tagInner {
-  padding-left: 1rem;   // px-4
-  padding-right: 1rem;  // px-4
-  padding-top: 0.375rem; // py-1.5
-  padding-bottom: 0.375rem;// py-1.5
-  // margin: 2px; // m-[2px] - handled by padding on wrapper
-  background-color: rgba($gray-medium, 0.8); // bg-[#222222]/80
-  border-radius: 9999px; // rounded-full
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.375rem;
+  padding-bottom: 0.375rem;
+  background-color: rgba($gray-medium, 0.8);
+  border-radius: 9999px;
   color: $white;
-  font-size: 0.875rem; // text-sm
+  font-size: 0.875rem; // text-sm (Default mobile)
+
+  // ADDED: Slightly smaller font on very small screens
+  @media (max-width: 480px) {
+      font-size: 0.75rem; // text-xs
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+  }
 }
 
 .title {
-  font-size: 1.875rem; // text-3xl
-  font-weight: 600; // font-semibold
+  font-size: 1.875rem; // text-3xl (Default mobile)
+  font-weight: 600;
   margin-bottom: 1rem; // mb-4
-  letter-spacing: -0.025em; // tracking-tight
+  letter-spacing: -0.025em;
 
   @media (min-width: 768px) { // md:
-    font-size: 2.25rem; // md:text-4xl
+    font-size: 2.25rem; // UNCHANGED Desktop font size
   }
 
-  .titleWhite {
-    color: $white;
+  // ADDED: Slightly smaller title on smaller mobile screens
+  @media (max-width: 480px) {
+    font-size: 1.625rem; // Between 2xl and 3xl
   }
 
-  .titleAmber {
-    color: $amber-500;
-  }
+  .titleWhite { color: $white; }
+  .titleAmber { color: $amber-500; }
 }
 
-// Benefits Grid
+// --- Grid / Slider Layout ---
 .grid {
+  // Default styles (will be overridden by mobile slider below)
   display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr)); // grid-cols-1
-  gap: 1.5rem; // gap-6
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1.5rem;
 
+  // Desktop Grid Layout (UNCHANGED)
   @media (min-width: 768px) { // md:
-    grid-template-columns: repeat(2, minmax(0, 1fr)); // md:grid-cols-2
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   @media (min-width: 1024px) { // lg:
-    grid-template-columns: repeat(3, minmax(0, 1fr)); // lg:grid-cols-3
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  // --- Mobile Slider Styles ---
+  @media (max-width: 767px) {
+    display: block;
+    .desktopCardWrapper { display: none; }
   }
 }
 
-// Benefit Card Styles
+// --- Slider Specific Styles (Mobile Only) ---
+.sliderContainer {
+  display: none; // Hidden by default
+
+  @media (max-width: 767px) {
+    display: block;
+    overflow: hidden;
+    position: relative;
+    margin-left: -1rem;
+    margin-right: -1rem;
+    padding-bottom: 2rem;
+  }
+}
+
+.sliderTrack {
+  display: none; // Hidden by default
+
+  @media (max-width: 767px) {
+    display: flex;
+    transition: transform 0.3s ease-in-out;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.slide {
+  display: none; // Hidden by default
+
+  @media (max-width: 767px) {
+    display: block;
+    flex: 0 0 100%;
+    box-sizing: border-box;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+}
+
+// --- Slider Controls Wrapper (Mobile Only) ---
+.sliderControls {
+   display: none; // Hidden by default
+
+   @media (max-width: 767px) {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      width: 100%;
+   }
+}
+
+// --- Arrow Button Styles (Mobile Only) ---
+.arrowButton {
+  display: none; // Hidden by default
+
+  @media (max-width: 767px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba($gray-medium, 0.7);
+    color: $white;
+    border: 1px solid $gray-700;
+    border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
+    cursor: pointer;
+    z-index: 20;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: rgba($gray-light, 0.9);
+    }
+  }
+}
+
+.arrowLeft {
+  /* @media (max-width: 767px) { left: 0.5rem; } */
+}
+
+.arrowRight {
+  /* @media (max-width: 767px) { right: 0.5rem; } */
+}
+
+// Wrapper for Desktop Cards (Hidden on Mobile)
+.desktopCardWrapper {
+   display: block; // Visible by default (on desktop grid)
+    @media (max-width: 767px) {
+        display: none; // Hide on mobile
+    }
+}
+
+// --- Benefit Card Styles ---
 .benefitCard {
-  border-radius: 0.75rem; // rounded-xl
-  padding: 3.5rem 2rem;  // px-8 py-14
+  border-radius: 0.75rem;
+  padding: 2.5rem 1.5rem; // Use mobile padding defined before
   background-color: $gray-light;
-  border: 1px solid rgba($gray-700, 0.6); // border border-gray-700/60
+  border: 1px solid rgba($gray-700, 0.6);
   transition: all 300ms ease-in-out;
   position: relative;
-  overflow: hidden; // Needed for hover effects/gradients
+  overflow: hidden;
+  width: 100%; // Ensure card takes full width of slide padding box
+  box-sizing: border-box;
+
+  @media (max-width: 480px) {
+    padding: 2rem 1.25rem; // Apply smaller padding for very small screens
+  }
+
+  // Desktop styles apply via .desktopCardWrapper context if needed,
+  // but base styles should be fine. Hover effect remains.
+  // ADDED: Reduce padding on smaller screens
+  @media (max-width: 767px) {
+     padding: 2.5rem 1.5rem;
+     margin-bottom: 0;
+  }
+   @media (max-width: 480px) {
+     padding: 2rem 1.25rem;
+  }
 
   &:hover {
     border-color: $amber-500;
@@ -123,63 +267,92 @@ $amber-600: #d97706; // For gradient
   }
 }
 
-.cardContent { // Wrapper for content inside card if needed for z-index
+.cardContent {
   position: relative;
   z-index: 10;
 }
 
 .iconContainer {
   background-color: $amber-500;
-  width: 3.5rem; // w-14
-  height: 3.5rem; // h-14
-  border-radius: 0.75rem; // rounded-xl
+  width: 3.5rem; // Default mobile size
+  height: 3.5rem;
+  border-radius: 0.75rem;
   @include flex-center;
-  margin-bottom: 2rem; // mb-8
+  margin-bottom: 2rem; // Default mobile margin
   transition: transform 300ms;
-  position: relative; // For Image layout="fill"
-  overflow: hidden; // For Image layout="fill"
+  position: relative;
+  overflow: hidden;
+
+  // ADDED: Smaller icon container on smaller screens
+  @media (max-width: 767px) {
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: 1.5rem;
+  }
 }
 
 .iconImage {
-  padding: 0.5rem; // p-2 applied via class on Image
-  object-fit: contain; // Ensure objectFit is applied
+  padding: 0.5rem; // Default padding
+  object-fit: contain;
+
+  // ADDED: Adjust padding if icon looks too small/large in smaller container
+  @media (max-width: 767px) {
+    padding: 0.4rem;
+  }
 }
 
 
 .cardTitle {
   color: $white;
-  font-weight: 600; // font-semibold
-  font-size: 1rem; // text-base (adjusted from text-sm based on visual hierarchy)
-  margin-bottom: 0.75rem; // mb-3
+  font-weight: 600;
+  font-size: 1rem; // text-base (Default mobile)
+  margin-bottom: 0.75rem;
+
+  // ADDED: Slightly smaller title on smaller screens
+  @media (max-width: 767px) {
+     font-size: 0.9375rem; // Between sm and base
+  }
 }
 
 .cardDescription {
   color: $gray-400;
-  font-size: 0.75rem; // text-xs
-  line-height: 1.5; // leading-normal
+  font-size: 0.75rem; // text-xs (Default mobile)
+  line-height: 1.5;
+
+  // ADDED: Slightly smaller text on very small screens if needed
+  // @media (max-width: 480px) {
+  //    font-size: 0.7rem;
+  // }
 }
 
 // Decorative Glow Effects
-.glowBottomRight {
-  position: absolute;
-  width: 600px;
-  height: 300px;
-  border-radius: 9999px; // rounded-full
-  background-color: rgba($amber-500, 0.1); // bg-amber-500/10
-  filter: blur(120px); // blur-[120px]
-  bottom: 0;
-  right: 0;
-  z-index: 0;
-}
-
+.glowBottomRight,
 .glowTopLeft {
   position: absolute;
   width: 600px;
   height: 300px;
-  border-radius: 9999px; // rounded-full
-  background-color: rgba($amber-500, 0.05); // bg-amber-500/5
-  filter: blur(150px); // blur-[150px]
+  border-radius: 9999px;
+  filter: blur(120px); // Adjust blur as needed
+  z-index: 0;
+}
+
+.glowBottomRight {
+  background-color: rgba($amber-500, 0.1);
+  bottom: 0;
+  right: 0;
+}
+
+.glowTopLeft {
+  background-color: rgba($amber-500, 0.05);
   top: 20%;
   left: 0;
-  z-index: 0;
+  filter: blur(150px);
+}
+
+// ADDED: Hide glows on mobile
+@media (max-width: 767px) {
+  .glowBottomRight,
+  .glowTopLeft {
+    display: none;
+  }
 } 

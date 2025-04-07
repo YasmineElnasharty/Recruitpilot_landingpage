@@ -46,13 +46,13 @@ const BrandsSection = () => {
                 key={item.uniqueKey} // Use the pre-generated unique key
                 className={styles.tickerItem}
               >
-                <div className={styles.logoWrapper}>
+                <div className={`${styles.logoWrapper} ${item.name === 'Spotify' ? styles.spotifyLogoWrapper : ''}`}>
                   <Image
                     src={item.logo}
                     alt={`${item.name} logo`}
-                    width={280}
-                    height={110}
+                    fill
                     className={styles.brandLogo}
+                    sizes="(max-width: 480px) 90px, (max-width: 767px) 110px, 140px"
                   />
                 </div>
               </div>

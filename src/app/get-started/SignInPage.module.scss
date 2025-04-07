@@ -21,6 +21,11 @@ $link-color: #f59e0b;
   min-height: 100vh;
   width: 100%;
   overflow: hidden;
+
+  // Add flex-direction for smaller screens
+  @media (max-width: 767px) {
+    flex-direction: column;
+  }
 }
 
 // --- Left Column (Form - Adapt Spacing) ---
@@ -34,6 +39,11 @@ $link-color: #f59e0b;
 
   @media (min-width: 768px) {
     flex-basis: 50%;
+  }
+
+  // Add smaller padding for very small screens
+  @media (max-width: 480px) {
+    padding: 1.5rem 1rem; // Reduce horizontal and vertical padding
   }
 }
 
@@ -211,7 +221,7 @@ $link-color: #f59e0b;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 4rem 2rem; // Standard padding
+  padding: 4rem 2rem; // Default padding for larger screens
   text-align: center;
 
   @media (min-width: 768px) {
@@ -219,12 +229,20 @@ $link-color: #f59e0b;
   }
 
    @media (max-width: 767px) {
-     display: none;
+     // Remove display: none;
+     // Adjust padding for stacked layout
+     padding: 3rem 1.5rem;
+     // Ensure it takes full width if needed, though flex: 1 should handle it
+     flex-basis: auto; // Reset basis for vertical stacking
+     min-height: 50vh; // Give it some minimum height, adjust as needed
    }
 }
 
 .rightContent {
   max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .logoContainer {
@@ -234,7 +252,7 @@ $link-color: #f59e0b;
 .logoImage {
   max-width: 100%; // Responsive
   height: auto; // Maintain aspect ratio
-  // Add any specific logo styles if different from default Image behavior
+  display: block;
 }
 
 .communityTitle { // Renamed class potentially, but using same name for consistency
