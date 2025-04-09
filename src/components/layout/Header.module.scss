@@ -115,16 +115,41 @@ $mobile-menu-border: $gray-700;
     // Style links specifically for mobile menu
     .navLink {
       font-size: 1.125rem; // Larger font size for mobile nav
-      color: $gray-300;
+      color: $white; // Set default mobile color to white
       padding: 0.5rem 0; // Add some vertical padding
       width: 100%; // Make links take full width
+      text-decoration: none; // Ensure no default underline
+      position: relative; // Needed for pseudo-element positioning
+      transition: color 0.3s ease-in-out; // Keep color transition
+
+      &::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px; // Underline thickness
+        bottom: -4px; // Adjust space below text (was -2px, increased for mobile tap)
+        left: 0;
+        background-color: $amber-500;
+        transition: width 0.3s ease-in-out; // Animate width
+      }
 
       &:hover {
-        color: $white;
+        color: $amber-500; // Change text color on hover
+        // text-decoration: underline; // Remove default underline
+        // text-decoration-color: $amber-500; // Remove default underline color
       }
+
+      &:hover::after {
+         width: 100%; // Expand underline on hover
+      }
+
       &.active {
-        color: $amber-500;
-        &:hover { color: $amber-400; }
+        color: $amber-500; // Active remains orange
+
+        // Apply underline to active state by default
+        &::after {
+           width: 100%;
+        }
       }
     }
   }
@@ -133,18 +158,42 @@ $mobile-menu-border: $gray-700;
 .navLink {
   font-size: 0.875rem; // text-sm
   font-weight: 600; // font-semibold
-  color: $gray-300;
-  transition: color 200ms;
-  text-decoration: none;
+  color: $white; // Set default color to white
+  // transition: color 200ms; // Handled by the new transition below
+  text-decoration: none; // Ensure no underline initially
+  position: relative; // Needed for pseudo-element positioning
+  padding-bottom: 4px; // Add padding to make space for the underline
+  transition: color 0.3s ease-in-out; // Smooth color transition
 
-  &:hover {
-    color: $white;
+  &::after {
+    content: '';
+    position: absolute;
+    width: 0; // Start with no width
+    height: 2px; // Underline thickness
+    bottom: 0; // Position at the bottom of the padding
+    left: 0;
+    background-color: $amber-500;
+    transition: width 0.3s ease-in-out; // Animate width smoothly
   }
 
+
+  &:hover {
+    color: $amber-500; // New hover color: orange
+    // text-decoration: underline; // Remove default underline
+    // text-decoration-color: $amber-500; // Remove default underline color
+  }
+
+   &:hover::after {
+      width: 100%; // Expand underline to full width on hover
+   }
+
   &.active { // Style for the active link (Home)
-    color: $amber-500;
-    &:hover {
-      color: $amber-400;
+    color: $amber-500; // Keep active color orange
+
+    // Apply underline to active state by default
+    &::after {
+       width: 100%;
+       // No transition needed here, it should appear directly
     }
   }
 }

@@ -100,19 +100,16 @@ const BenefitsSection = () => {
           </h2>
         </div>
 
-        {/* --- Grid for Desktop / Slider Wrapper for Mobile --- */}
-        {/* The 'grid' class will now mainly apply > 768px */}
+        {/* Grid for Desktop / Slider Wrapper for Mobile */}
         <div className={styles.grid}>
-           {/* --- Mobile Slider Structure --- */}
-           <div className={styles.sliderContainer}> {/* Added for mobile */}
+           {/* Mobile Slider Structure */}
+           <div className={styles.sliderContainer}>
               <div
                  className={styles.sliderTrack}
-                 // Apply transform based on currentIndex
                  style={{ transform: `translateX(-${currentIndex * 100}%)` }}
                >
                  {benefits.map((benefit) => (
-                   <div key={benefit.id} className={styles.slide}> {/* Added wrapper */}
-                     {/* Render the existing card component */}
+                   <div key={benefit.id} className={styles.slide}>
                      <BenefitCard
                        imageUrl={benefit.imageUrl}
                        title={benefit.title}
@@ -122,7 +119,6 @@ const BenefitsSection = () => {
                  ))}
                </div>
 
-               {/* --- NEW: Wrapper for Arrow Buttons --- */}
                <div className={styles.sliderControls}>
                   <button
                     onClick={goToPrevious}
@@ -139,11 +135,9 @@ const BenefitsSection = () => {
                     <ChevronRight size={24} />
                   </button>
                </div>
-               {/* --- End Wrapper --- */}
            </div>
 
-           {/* --- Desktop Grid Rendering (Hidden on Mobile) --- */}
-           {/* This maps the cards again, but they will only be visible via the grid layout on desktop */}
+           {/* Desktop Grid Rendering */}
            {benefits.map((benefit) => (
              <div key={`desktop-${benefit.id}`} className={styles.desktopCardWrapper}>
                 <BenefitCard
@@ -155,10 +149,6 @@ const BenefitsSection = () => {
            ))}
         </div>
       </div>
-
-      {/* Decorative Glow Effects */}
-      <div className={styles.glowBottomRight}></div>
-      <div className={styles.glowTopLeft}></div>
     </section>
   );
 };

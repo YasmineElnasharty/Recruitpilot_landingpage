@@ -5,6 +5,8 @@ $gray-100: #f3f4f6; // hover:bg-gray-100
 $gray-400: #9ca3af;
 $gray-700: #374151;
 $orange-500: #f97316; // text-orange-500
+$quote-bg: rgba(255, 255, 255, 0.1); // Semi-transparent white for quote bg
+$quote-text-color: #f9fafb; // Lighter gray/off-white for quote text
 
 // Gradient Colors (Brightest to Darkest)
 $gradient-start: #FF9900;
@@ -50,30 +52,53 @@ $gradient-end: #BC7407;
   overflow: hidden;
   // Apply the gradient defined in variables
   background-image: linear-gradient(to right, $gradient-start, $gradient-c2, $gradient-c3, $gradient-c4, $gradient-end);
+  position: relative;
+  overflow: hidden;
 }
 
 .contentWrapper {
   padding: 2rem; // p-8
   display: flex;
-  flex-direction: column; // Default mobile
-  align-items: center;
-  justify-content: space-around; // justify-around
+  flex-direction: column; // Default mobile: Stacked
+  align-items: center; // Center items horizontally in mobile column
+  justify-content: space-between; // Default (less relevant for column)
   position: relative;
+  min-height: 350px;
+  overflow: hidden; // Keep hidden for absolutely positioned children
 
+  // Apply row layout starting from md breakpoint
   @media (min-width: 768px) { // md:
-    padding: 3rem; // md:p-12
-    flex-direction: row; // md:flex-row
+    padding: 2.5rem 3rem; // Adjust padding for medium screens
+    flex-direction: row; // md:flex-row (Side-by-side)
+    align-items: center; // Vertically center items in the row
+    justify-content: space-between; // Space items out
   }
+
+  @media (min-width: 1024px) { // lg:
+    padding: 3rem 4rem; // Increase padding for larger screens
+  }
+  // REMOVED specific md-only block as row layout now starts at md
 }
 
 .textContainer {
-  margin-bottom: 2rem; // mb-8
+  margin-bottom: 2rem;
   position: relative;
-  z-index: 10; // Ensure text is above any background images spilling over
+  z-index: 10;
+  text-align: center; // Center text on mobile
 
+  // Apply styles for side-by-side layout starting at md
   @media (min-width: 768px) { // md:
-    margin-bottom: 0; // md:mb-0
+    margin-bottom: 0;
+    text-align: left;
+    flex: 1 1 40%; // Was 50%
+    padding-right: 1.5rem;
   }
+
+  @media (min-width: 1024px) { // lg:
+    padding-right: 2rem;
+    flex: 1 1 40%; // Maintain basis
+  }
+  // REMOVED specific md-only block
 }
 
 .tag {
@@ -90,34 +115,44 @@ $gradient-end: #BC7407;
 }
 
 .title {
-  font-size: 1.875rem; // text-3xl
-  font-weight: 700; // font-bold
+  font-size: 2rem; // Was 2.25rem
+  font-weight: 700;
   color: $white;
-  margin-bottom: 1rem; // mb-4
-  letter-spacing: -0.025em; // tracking-tight
+  margin-bottom: 0.875rem; // Adjusted margin slightly
+  letter-spacing: -0.025em;
+  line-height: 1.2;
 
   @media (min-width: 768px) { // md:
-    font-size: 2.25rem; // md:text-4xl
+    font-size: 2.5rem; // Was 2.75rem
   }
+   @media (max-width: 767px) { // mobile
+     font-size: 1.75rem; // Was 1.875rem
+   }
+   @media (max-width: 480px) { // Extra-small screens
+     font-size: 1.5rem; // Was 1.625rem
+     line-height: 1.25;
+   }
 }
 
 .description {
   color: $white;
-  margin-bottom: 1.5rem; // mb-6
-  font-size: 1rem; // text-base
+  margin-bottom: 1.25rem; // Adjusted margin slightly
+  font-size: 0.9375rem; // Was 1rem (approx 15px)
+  line-height: 1.55; // Adjusted line height
 }
 
 .trialButton {
   background-color: $white;
   color: $orange-500;
-  padding: 0.5rem 1.5rem; // px-6 py-2
-  border-radius: 9999px; // rounded-full
-  font-weight: 500; // font-medium
+  padding: 0.6rem 1.75rem;
+  border-radius: 9999px;
+  font-weight: 500;
   display: inline-flex;
   align-items: center;
   transition: background-color 200ms;
-  box-shadow: 0 10px 15px -3px rgba(0,0,0, 0.1), 0 4px 6px -4px rgba(0,0,0, 0.1); // shadow-lg
+  box-shadow: 0 4px 6px -1px rgba(0,0,0, 0.1), 0 2px 4px -2px rgba(0,0,0, 0.1);
   text-decoration: none;
+  margin-bottom: 0.25rem;
 
   &:hover {
     background-color: $gray-100;
@@ -132,6 +167,21 @@ $gradient-end: #BC7407;
     margin-left: 0.25rem; // ml-1
     font-weight: 700; // font-bold
     font-size: 1.125rem; // text-lg
+  }
+}
+
+.noCreditText {
+  color: $white;
+  font-size: 0.75rem;
+  margin-top: -0.1rem;
+  padding-left: 1rem;
+  display: block;
+
+  @media (min-width: 768px) {
+     
+  }
+  @media (max-width: 767px) {
+    
   }
 }
 
@@ -153,27 +203,136 @@ $gradient-end: #BC7407;
 
 // Base styles for images within the container
 .image {
-  position: absolute; // Needed for layout="fill" and transforms
-  inset: 0; // Covers the container
-  object-fit: contain; // objectFit="contain"
+  position: absolute;
+  width: 20rem; // Example base width md:w-80
+  height: 20rem; // Example base height md:h-80
+  z-index: 1; // Behind text and quote containers (z-index 10)
+  pointer-events: none; // Prevent images from interfering with interactions
+
+  // Adjust size on smaller screens if needed
+  @media (max-width: 767px) {
+     width: 15rem; // w-60
+     height: 15rem; // h-60
+  }
+
+  // The Image component itself fills this container
+  > span { // Next.js Image component often wraps in a span
+    display: block !important; // Override default inline styles if necessary
+  }
 }
 
-// Specific image adjustments
-.foregroundImage {
-  @extend .image; // Inherit base image styles
-  z-index: 10; // relative z-10
-}
-
+// Restore original positioning attempts using translate
+// These are positioned relative to the gradientBox
 .backgroundRobot1 {
-  @extend .image; // Inherit base image styles
-  z-index: 0; // z-0 (behind foreground)
-  opacity: 1; // opacity-100 (default but explicit)
-  transform: translate(5rem, -1.5rem); // translate-x-20 -translate-y-6
+  opacity: 1;
+  top: 0rem;
+  right: 8rem;
+  transform: translate(-1rem, 1rem);
+
+  @media (max-width: 1023px) {
+    top: auto;
+    bottom: 1rem;
+    right: 5rem;
+     transform: translate(-2rem, 3rem) scale(0.8);
+     opacity: 0.7;
+  }
+   @media (max-width: 767px) {
+     right: 2rem;
+     bottom: 0rem;
+     transform: translate(-2.5rem, 2.5rem) scale(0.7);
+     opacity: 0.5;
+   }
 }
 
 .backgroundRobot2 {
-  @extend .image; // Inherit base image styles
-  z-index: 0; // z-0 (behind foreground)
-  opacity: 0.5; // opacity-50
-  transform: translate(8rem, 4rem); // translate-x-32 translate-y-16
-} 
+  opacity: 0.5;
+  bottom: 0rem;
+  right: 0rem;
+  transform: translate(-2rem, 0rem);
+
+   @media (max-width: 1023px) {
+     bottom: -2rem;
+     right: -1rem;
+     transform: translate(-3rem, -1.5rem) scale(0.8);
+     opacity: 0.4;
+   }
+    @media (max-width: 767px) {
+     bottom: -1rem;
+     right: -2rem;
+     transform: translate(-4rem, -2.5rem) scale(0.6);
+     opacity: 0.3;
+   }
+}
+
+// --- Right Side Quote Styles ---
+.quoteContainer {
+  position: relative;
+  flex-shrink: 0;
+  width: 100%; // Full width on mobile
+  max-width: 450px; // Max width for the quote box on mobile
+  margin-top: 2rem; // Space above on mobile
+  z-index: 10; // Ensure above background images
+
+  // Apply styles for side-by-side layout starting at md
+  @media (min-width: 768px) { // md:
+    width: auto;
+    max-width: none;
+    flex: 1 1 55%; // Was 45%
+    margin-top: 0;
+    margin-left: 2.5rem; // Keep margin for spacing
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+   @media (min-width: 1024px) { // lg:
+       margin-left: 3rem; // Keep margin for spacing
+       flex: 1 1 55%; // Maintain basis
+   }
+  // REMOVED specific md-only block
+}
+
+.quoteInner {
+  border-radius: 1rem; // rounded-xl
+  padding: 1.5rem; // p-6
+  color: $quote-text-color;
+  width: 100%; // Ensure inner takes full width of container
+  text-align: right;
+
+  @media (min-width: 768px) {
+     padding: 2rem; // md:p-8
+  }
+}
+
+.quoteHeading {
+  font-size: 1.5rem;   // Increased size (was 1.375rem)
+  font-weight: 600;
+  margin-bottom: 1.125rem; // Slightly increased margin
+  color: $white;
+}
+
+.quoteBody {
+  font-size: 1.75rem;  // Increased size (was 1.5rem)
+  font-weight: 600;
+  line-height: 1.65;   // Slightly adjusted line-height
+  margin-bottom: 1.125rem; // Slightly increased margin
+  font-style: italic;
+  quotes: "“" "”";
+
+  &::before {
+    content: open-quote;
+  }
+  &::after {
+    content: close-quote;
+  }
+}
+
+.quoteConclusion {
+  font-size: 1.5rem;   // Increased size (was 1.375rem)
+  font-weight: 600;
+}
+
+// --- Removed Foreground Image Style ---
+/*
+.foregroundImage { ... }
+*/ 

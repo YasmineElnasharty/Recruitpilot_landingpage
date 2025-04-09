@@ -1,3 +1,5 @@
+"use client";
+
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import HeroSection from '@/components/sections/HeroSection';
@@ -6,6 +8,8 @@ import FeaturesSection from '@/components/sections/FeaturesSection';
 import BenefitsSection from '@/components/sections/BenefitsSection';
 import TestimonialsSection from '@/components/sections/TestimonialsSection';
 import PricingSection from '@/components/sections/PricingSection';
+import Script from 'next/script';
+import React from 'react';
 
 export default function Home() {
   return (
@@ -25,6 +29,8 @@ export default function Home() {
       <PricingSection />
       
       <Footer />
+
+      <Script src="/assets/js/wave-background.js" strategy="lazyOnload" />
     </main>
   );
 }

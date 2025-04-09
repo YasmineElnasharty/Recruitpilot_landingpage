@@ -3,25 +3,115 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './HeroSection.module.scss'; // Import the SCSS module
-import { useEffect, useRef } from 'react'; // Import useEffect and useRef
+import { useEffect, useRef, useState, ChangeEvent, FocusEvent } from 'react'; // Import useEffect, useRef, useState, ChangeEvent, FocusEvent
 
-// How It Works Button component using SCSS modules
-const HowItWorksButton = () => {
+// --- NEW: Animated Search Bar Component ---
+const AnimatedSearchBar = () => {
+  const questions = [
+    "What are best practices for conducting virtual interviews?",
+    "How do I improve the candidate experience?",
+    "What strategies can I use to reduce turnover?",
+    "How should I negotiate the counteroffer with Jane?",
+    "Which were the top 3 applicants to my Java Developer Job ad?",
+  ];
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [animatedText, setAnimatedText] = useState(''); // Renamed from displayedText
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [userInput, setUserInput] = useState(''); // State for user's actual input
+  const [isFocused, setIsFocused] = useState(false); // State to track focus
+
+  const typingSpeed = 40;
+  const deletingSpeed = 20;
+  const pauseDuration = 1000;
+
+  // Effect for the animation logic
+  useEffect(() => {
+    // Only run animation if the input is not focused AND user hasn't typed anything
+    if (isFocused || userInput) {
+       // If user is focused or has typed, ensure animated text is cleared
+       // so it doesn't reappear awkwardly on slight timing issues.
+       if (animatedText !== '') setAnimatedText('');
+       return;
+    };
+
+    // --- Animation Logic ---
+    const handleTyping = () => {
+      const fullText = questions[currentQuestionIndex];
+
+      if (isDeleting) {
+        setAnimatedText((prev) => prev.substring(0, prev.length - 1));
+      } else {
+        setAnimatedText((prev) => fullText.substring(0, prev.length + 1));
+      }
+
+      if (!isDeleting && animatedText === fullText) {
+        setTimeout(() => setIsDeleting(true), pauseDuration);
+      } else if (isDeleting && animatedText === '') {
+        setIsDeleting(false);
+        setCurrentQuestionIndex((prev) => (prev + 1) % questions.length);
+      }
+    };
+    // --- End Animation Logic ---
+
+    const timer = setTimeout(handleTyping, isDeleting ? deletingSpeed : typingSpeed);
+
+    return () => clearTimeout(timer);
+
+  // Update dependencies: run effect when focus changes or user input clears, besides animation states
+  }, [animatedText, isDeleting, currentQuestionIndex, questions, deletingSpeed, typingSpeed, pauseDuration, isFocused, userInput]);
+
+
+  // Handler for user input changes
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setUserInput(e.target.value);
+  };
+
+  // Handlers for focus state
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+    // Optional: If you want the animation to restart immediately on blur
+    // when input is empty, trigger a state update that useEffect depends on.
+    // But the current useEffect dependency array handles this.
+  };
+
+
+  // Generate Icon (Sparkles) - Simple inline SVG
+  const GenerateIcon = () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 2L14.47 7.53L20 10L14.47 12.47L12 18L9.53 12.47L4 10L9.53 7.53L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M4 16L5.47 18.53L8 20L5.47 21.47L4 24L2.53 21.47L0 20L2.53 18.53L4 16Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+       <path d="M18 16L19.47 18.53L22 20L19.47 21.47L18 24L16.53 21.47L14 20L16.53 18.53L18 16Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+
+
   return (
-    <Link href="/how-it-works" className={styles.howItWorksButton}>
-      <div className={styles.iconContainer}>
-        <div className={styles.outerCircle}></div>
-        <div className={styles.innerCircle}></div>
-        <svg width="11" height="13" viewBox="0 0 10 12" className={styles.playIcon}>
-          <path d="M3 2 C2.3 2 1.8 2.7 1.8 3.5 L1.8 8.5 C1.8 9.3 2.3 10 3 10 L8 7 C8.7 6.6 8.7 5.4 8 5 L3 2 Z" />
-        </svg>
-      </div>
-      <span className={styles.linkText}>
-        How IT Works
-      </span>
-    </Link>
+    <div className={styles.searchBarContainer}>
+      <input
+        type="text"
+        className={styles.searchInput}
+        // Use value prop now. Display user input if it exists, otherwise show animation (or empty if focused)
+        value={userInput || (isFocused ? '' : animatedText)}
+        // Use placeholder for a static hint or leave empty
+        placeholder={isFocused || userInput ? '' : 'Ask RecruitPilot AI...'} // Show static placeholder only when not focused and no input/animation
+        onChange={handleInputChange}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+      />
+      <button className={styles.searchButton}>
+        <GenerateIcon />
+        <span>Generate</span>
+      </button>
+    </div>
   );
 };
+// --- END: Animated Search Bar Component ---
+
+// Removed HowItWorksButton component
 
 // // Removed easing function for linear motion
 // const easeOutCubic = (t: number): number => 1 - Math.pow(1 - t, 3);
@@ -110,6 +200,10 @@ const HeroSection = () => {
   return (
     // Add ref to the section
     <section ref={sectionRef} className={styles.heroSection}>
+      {/* Gradient Circle Decorations */}
+      <div className={`${styles.gradientCircleDecoration} ${styles.heroCircle1}`}></div>
+      <div className={`${styles.gradientCircleDecoration} ${styles.heroCircle2}`}></div>
+
       <div className={styles.container}>
         <h1 className={styles.headline}>
           <span className={styles.headlineWhite}>Stop sucking </span>
@@ -130,16 +224,9 @@ const HeroSection = () => {
           </p>
         </div>
 
-        <div className={styles.ctaContainer}>
-          <Link href="/trial" className={styles.trialButton}>
-            <span className={styles.buttonContent}>
-              <span className={styles.text}>Start Free Trial</span>
-              <span className={styles.arrow}>&rsaquo;</span>
-            </span>
-          </Link>
-
-          <HowItWorksButton />
-        </div>
+        {/* --- RENDER SEARCH BAR --- */}
+        <AnimatedSearchBar />
+        {/* --- END SEARCH BAR --- */}
 
         {/* Chat Interface Image Container */}
         <div ref={imageContainerRef} className={styles.imageContainer}>

@@ -11,6 +11,13 @@ $gray-light: #2a2a2a;
 $amber-900: #78350f; // For gradient
 $amber-600: #d97706; // For gradient
 
+// --- Colors from Testimonials ---
+$white-05: rgba(255, 255, 255, 0.05); // 5% White for background
+$white-10: rgba(255, 255, 255, 0.10); // 10% White for border
+$hover-orange-start: rgba(255, 153, 0, 0.0); // #FF9900 at 0% opacity
+$hover-orange-end: rgba(255, 167, 0, 0.3);   // #FFA700 at 30% opacity
+// --- End Colors ---
+
 // Mixins (optional)
 @mixin flex-center {
   display: flex;
@@ -231,38 +238,34 @@ $amber-600: #d97706; // For gradient
 // --- Benefit Card Styles ---
 .benefitCard {
   border-radius: 0.75rem;
-  padding: 2.5rem 1.5rem; // Use mobile padding defined before
-  background-color: $gray-light;
-  border: 1px solid rgba($gray-700, 0.6);
-  transition: all 300ms ease-in-out;
+  padding: 2.5rem 1.5rem;
+  background-color: $white-05;
+  border: 1px solid $white-10;
+  transition: border-color 0.3s, background-image 0.3s, box-shadow 0.3s, transform 0.3s;
   position: relative;
   overflow: hidden;
-  width: 100%; // Ensure card takes full width of slide padding box
+  width: 100%;
   box-sizing: border-box;
+  background-clip: padding-box;
+  -webkit-background-clip: padding-box;
 
   @media (max-width: 480px) {
-    padding: 2rem 1.25rem; // Apply smaller padding for very small screens
+    padding: 2rem 1.25rem;
   }
 
-  // Desktop styles apply via .desktopCardWrapper context if needed,
-  // but base styles should be fine. Hover effect remains.
-  // ADDED: Reduce padding on smaller screens
   @media (max-width: 767px) {
      padding: 2.5rem 1.5rem;
      margin-bottom: 0;
   }
-   @media (max-width: 480px) {
-     padding: 2rem 1.25rem;
-  }
 
   &:hover {
-    border-color: $amber-500;
-    background-image: linear-gradient(to bottom right, $gray-light, rgba($amber-900, 0.3), rgba($amber-600, 0.2)); // hover:bg-gradient-to-br ...
-    box-shadow: 0 10px 15px -3px rgba($amber-500, 0.1), 0 4px 6px -4px rgba($amber-500, 0.1); // hover:shadow-lg hover:shadow-amber-500/10
-    transform: translateY(-0.25rem); // hover:-translate-y-1
+    border-color: $white-10;
+    border-top-color: $white-10;
+    background-image: linear-gradient(to bottom, $hover-orange-start, $hover-orange-end);
+    transform: translateY(-0.25rem);
 
-    .iconContainer { // Target icon container on card hover
-      transform: scale(1.05); // group-hover:scale-105
+    .iconContainer {
+      transform: scale(1.05);
     }
   }
 }
@@ -325,34 +328,67 @@ $amber-600: #d97706; // For gradient
   // }
 }
 
-// Decorative Glow Effects
-.glowBottomRight,
-.glowTopLeft {
+.decorativeCircle2 {
   position: absolute;
-  width: 600px;
-  height: 300px;
-  border-radius: 9999px;
-  filter: blur(120px); // Adjust blur as needed
+  top: 20%; // Example positioning
+  right: -150px; // Example positioning (partially off-screen)
   z-index: 0;
+  pointer-events: none;
 }
 
-.glowBottomRight {
-  background-color: rgba($amber-500, 0.1);
-  bottom: 0;
-  right: 0;
-}
-
-.glowTopLeft {
-  background-color: rgba($amber-500, 0.05);
-  top: 20%;
-  left: 0;
-  filter: blur(150px);
-}
-
-// ADDED: Hide glows on mobile
-@media (max-width: 767px) {
-  .glowBottomRight,
-  .glowTopLeft {
-    display: none;
-  }
+.decorativeImage { // Re-add or ensure this class style is defined
+   opacity: 0.5;
 } 
+
+// Example placement in HeroSection.module.scss (repeat or move to global scope)
+// ... other styles ...
+
+.gradientCircleDecoration {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 100%, rgba(100, 100, 100, 0.35) 0%, rgba(100, 100, 100, 0) 80%);
+  z-index: 0;
+  pointer-events: none;
+  // Default size - Reduced
+  width: 250px; // Reduced from 400px
+  height: 250px; // Reduced from 400px
+}
+
+// --- Positioning Examples (You MUST add these) ---
+// Add specific positioning rules for each circle instance like this:
+
+.heroCircle1 {
+  // Inherits from .gradientCircleDecoration
+  width: 300px; // Reduced from 500px
+  height: 300px; // Reduced from 500px
+  top: 10%;
+  left: -150px; // Adjust position if needed due to size change
+}
+
+.heroCircle2 {
+  width: 200px; // Reduced from 350px
+  height: 200px; // Reduced from 350px
+  bottom: 5%;
+  right: -100px; // Adjust position if needed
+}
+
+.benefitsCircle1 {
+   width: 280px; // Reduced from 450px
+   height: 280px; // Reduced from 450px
+   top: 20%;
+   right: -140px; // Adjust position if needed
+}
+
+.featuresCircle1 {
+    width: 350px; // Reduced from 600px
+    height: 350px; // Reduced from 600px
+    bottom: -50px; // Adjust position if needed
+    left: -175px; // Adjust position if needed
+}
+
+.testimonialsCircle1 {
+    width: 250px; // Reduced from 400px (or keep default)
+    height: 250px; // Reduced from 400px (or keep default)
+    top: 5%;
+    left: -125px; // Adjust position if needed
+}

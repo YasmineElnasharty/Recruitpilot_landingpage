@@ -2,7 +2,7 @@
 
 import { User, UserSquare } from 'lucide-react';
 import styles from './TestimonialsSection.module.scss'; // Import the SCSS module
-import { useState } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 // Function to guess gender (very basic) - icons styled via SCSS now
@@ -38,6 +38,64 @@ const TestimonialCard = ({ name, title, testimonial }: { name: string, title: st
   );
 };
 
+// --- Counter Animation Hook (Using requestAnimationFrame) ---
+const useCounter = (targetValue: number, duration: number = 2000, isVisible: boolean) => {
+  const [count, setCount] = useState(0);
+  const frameRef = useRef<number | null>(null); // To store requestAnimationFrame ID
+  const startTimeRef = useRef<number | null>(null); // To store animation start time
+  const currentValRef = useRef<number>(0); // Ref to track current value internally
+
+  const animate = useCallback((timestamp: number) => {
+    if (!startTimeRef.current) {
+      startTimeRef.current = timestamp; // Initialize start time on first frame
+    }
+
+    const elapsed = timestamp - startTimeRef.current;
+    const progress = Math.min(1, elapsed / duration); // Progress from 0 to 1
+
+    const currentTargetValue = Math.floor(progress * targetValue); // Linear interpolation
+    currentValRef.current = currentTargetValue; // Update internal ref first
+    setCount(currentTargetValue); // Update state for rendering
+
+    if (progress < 1) {
+      // If animation not finished, request next frame
+      frameRef.current = requestAnimationFrame(animate);
+    }
+  }, [targetValue, duration]);
+
+
+  useEffect(() => {
+    if (isVisible) {
+      // Start animation when visible
+      startTimeRef.current = null; // Reset start time
+      currentValRef.current = 0; // Reset internal value
+      setCount(0); // Reset displayed value
+      frameRef.current = requestAnimationFrame(animate);
+    } else {
+      // Reset count and cancel animation when not visible
+      setCount(0);
+      currentValRef.current = 0;
+      if (frameRef.current) {
+        cancelAnimationFrame(frameRef.current);
+        frameRef.current = null;
+      }
+      startTimeRef.current = null;
+    }
+
+    // Cleanup function to cancel animation on unmount or if visibility changes again
+    return () => {
+      if (frameRef.current) {
+        cancelAnimationFrame(frameRef.current);
+        frameRef.current = null;
+      }
+       startTimeRef.current = null;
+    };
+  }, [isVisible, animate]); // Rerun effect when visibility changes or animate function updates
+
+  return count;
+};
+// --- End Counter Hook ---
+
 const TestimonialsSection = () => {
   // Use template literals (backticks) for testimonial strings
   const testimonials = [
@@ -53,6 +111,39 @@ const TestimonialsSection = () => {
 
   // State for active index
   const [currentIndex, setCurrentIndex] = useState(0);
+  // --- State and Ref for Intersection Observer ---
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  // --- End Observer State/Ref ---
+
+  // --- Counter State - Pass isVisible ---
+  const animatedCount = useCounter(1250, 2000, isVisible);
+
+  // --- Effect for Intersection Observer ---
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // Set visibility based on intersection status
+        setIsVisible(entry.isIntersecting);
+      },
+      {
+        root: null, // relative to document viewport
+        rootMargin: '0px', // margin around root
+        threshold: 0.1 // 10% visible
+      }
+    );
+
+    const currentRef = sectionRef.current; // Capture current value
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef); // Cleanup observer
+      }
+    };
+  }, []); // Run only once on mount
 
   // Navigation functions
   const goToPrevious = () => {
@@ -79,12 +170,23 @@ const TestimonialsSection = () => {
     return ''; // Default empty class
   };
 
-  // Split for desktop view remains the same
-  const firstRow = testimonials.slice(0, 4);
-  const secondRow = testimonials.slice(4, 8);
+  // --- Data for Desktop Tickers ---
+  // Duplicate arrays for seamless looping
+  const firstRowTickerItems = [
+    ...testimonials.slice(0, 4).map((t, i) => ({ ...t, uniqueKey: `r1-${i}` })),
+    ...testimonials.slice(0, 4).map((t, i) => ({ ...t, uniqueKey: `r1-copy-${i}` }))
+  ];
+  const secondRowTickerItems = [
+    ...testimonials.slice(4, 8).map((t, i) => ({ ...t, uniqueKey: `r2-${i}` })),
+    ...testimonials.slice(4, 8).map((t, i) => ({ ...t, uniqueKey: `r2-copy-${i}` }))
+  ];
+  // --- End Data ---
 
   return (
-    <section className={styles.testimonialsSection}>
+    <section ref={sectionRef} className={styles.testimonialsSection}>
+      {/* Gradient Circle Decoration */}
+      <div className={`${styles.gradientCircleDecoration} ${styles.testimonialsCircle1}`}></div>
+
       <div className={styles.contentWrapper}>
         <div className={styles.header}>
           <div className={styles.tagWrapper}>
@@ -92,9 +194,11 @@ const TestimonialsSection = () => {
               Testimonials
             </div>
           </div>
-          <h2 className={styles.title}>
-            What our customers say <span className={styles.titleHighlight}>about us</span>
+          {/* --- UPDATED Title Structure --- */}
+          <h2 className={styles.mainTitle}>
+            <span className={styles.countHighlight}>{animatedCount.toLocaleString()}+</span> customers <span className={styles.titleHighlight}>love us</span>
           </h2>
+          {/* --- END UPDATE --- */}
         </div>
 
         {/* --- Mobile Stacked/Cover Flow Container --- */}
@@ -135,33 +239,33 @@ const TestimonialsSection = () => {
         </div>
         {/* --- End Mobile Container --- */}
 
-        {/* --- Desktop Grid (Hidden on Mobile/Tablet) --- */}
-        <div className={`${styles.grid} ${styles.firstRow}`}>
-          {firstRow.map((testimonial) => (
-            <TestimonialCard
-              key={testimonial.id}
-              name={testimonial.name}
-              title={testimonial.title}
-              testimonial={testimonial.testimonial}
-            />
-          ))}
+        {/* --- Desktop Tickers (Replaces Grid) --- */}
+        <div className={styles.desktopTickersContainer}> {/* Wrapper for desktop tickers */}
+          {/* First Ticker Row (Moves Left) */}
+          <div className={styles.tickerRowContainer}>
+            <div className={`${styles.testimonialTickerTrack} ${styles.tickerLeft}`}>
+              {firstRowTickerItems.map((item) => (
+                <div key={item.uniqueKey} className={styles.testimonialTickerItem}>
+                  <TestimonialCard {...item} />
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* Second Ticker Row (Moves Right) */}
+          <div className={styles.tickerRowContainer}>
+            <div className={`${styles.testimonialTickerTrack} ${styles.tickerRight}`}>
+              {secondRowTickerItems.map((item) => (
+                <div key={item.uniqueKey} className={styles.testimonialTickerItem}>
+                  <TestimonialCard {...item} />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-        <div className={`${styles.grid} ${styles.secondRow}`}>
-           {secondRow.map((testimonial) => (
-            <TestimonialCard
-              key={testimonial.id}
-              name={testimonial.name}
-              title={testimonial.title}
-              testimonial={testimonial.testimonial}
-            />
-          ))}
-        </div>
-         {/* --- End Desktop Grid --- */}
+        {/* --- End Desktop Tickers --- */}
 
       </div>
-
-      {/* Amber glow effect */}
-      <div className={styles.glowEffect}></div>
+      {/* Removed Glow Effect */}
     </section>
   );
 };

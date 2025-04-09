@@ -15,6 +15,24 @@ $placeholder-grad-from: #271a0d; // from-[#271a0d]
 $placeholder-grad-to: #1c1610;   // to-[#1c1610]
 $transparent: transparent;
 
+// --- NEW Tag Specific Colors ---
+$tag-border-orange: rgba(255, 153, 0, 0.9);
+$tag-border-white: rgba(255, 255, 255, 0.9);
+$tag-inner-bg: rgba(243, 244, 249, 0.05); // Equivalent to BenefitsSection's inner background
+// --- END NEW Tag Colors ---
+
+// --- Colors from Testimonials ---
+$white-05: rgba(255, 255, 255, 0.05); // 5% White (optional background)
+$white-10: rgba(255, 255, 255, 0.10); // No longer needed for wrapper border
+$hover-orange-start: rgba(255, 153, 0, 0.0); // #FF9900 at 0% opacity
+$hover-orange-end: rgba(255, 167, 0, 0.3);   // #FFA700 at 30% opacity
+// --- End Colors ---
+
+// --- NEW Placeholder Frame Colors ---
+$frame-orange-1: rgba(255, 167, 0, 0.1); // FFA700 at 10% opacity
+$frame-orange-2: rgba(255, 153, 0, 0.1); // FF9900 at 10% opacity
+// --- END NEW Colors ---
+
 // Mixins (optional)
 @mixin flex-center {
   display: flex;
@@ -158,19 +176,21 @@ $transparent: transparent;
 
 // Feature Card Styles
 .featureCard {
-  transition: all 300ms;
+  transition: border-color 0.3s, background-image 0.3s;
   display: flex;
   align-items: flex-start;
-  padding: 1.5rem; // Default desktop padding
+  padding: 1.5rem;
   border-radius: 0.75rem;
   border: 1px solid $transparent;
+  background-clip: padding-box;
+  -webkit-background-clip: padding-box;
 
   &:hover {
-    border-color: $stone-600; // hover:border-stone-600
-    background: linear-gradient(to bottom, rgba($black, 0.5), rgba($amber-600, 0.2)); // hover:bg-gradient-to-b hover:from-black/50 hover:to-amber-600/20
+    border-color: $white-10;
+    border-top-color: $white-10;
+    background-image: linear-gradient(to bottom, $hover-orange-start, $hover-orange-end);
   }
 
-  // ADDED: Reduce padding on mobile
   @media (max-width: 767px) {
     padding: 1rem;
   }
@@ -182,6 +202,10 @@ $transparent: transparent;
   @include flex-center;
   margin-right: 1.25rem; // Default margin
   flex-shrink: 0;
+  // ADDED: Set icon color
+  > svg {
+    color: $amber-500;
+  }
 
   // ADDED: Adjust size and margin on mobile
   @media (max-width: 767px) {
@@ -192,6 +216,7 @@ $transparent: transparent;
     > svg {
       width: 24px; // Example size, match desired look
       height: 24px;
+      // Color is inherited unless overridden here again
     }
   }
 }
@@ -251,40 +276,99 @@ $transparent: transparent;
 }
 
 .placeholderOuter {
-  height: 600px; // Default desktop height
-  width: 90%; // Default desktop width
+  height: 600px;
+  width: 90%;
   border-radius: 1rem;
-  background: linear-gradient(to bottom right, $placeholder-grad-from, $placeholder-grad-to);
+  background: linear-gradient(to bottom right, $frame-orange-2, $frame-orange-1);
+  border: 1px solid $white-10;
   overflow: hidden;
-  padding: 3rem; // Default desktop padding
-  border: 1px solid $stone-600;
+  padding: 3rem;
   box-shadow: 0 10px 15px -3px rgba(0,0,0, 0.1), 0 4px 6px -4px rgba(0,0,0, 0.1);
-
-  // --- ADD flex properties for centering ---
   display: flex;
   align-items: center;
   justify-content: center;
-  // --- End of added properties ---
 
-  // ADDED: Adjust placeholder for mobile/tablet
   @media (max-width: 1023px) {
-     width: 100%; // Take full width of column on tablet/mobile
+    width: 100%;
   }
   @media (max-width: 767px) {
-     height: 450px; // Reduce height significantly on mobile
-     padding: 1.5rem; // Reduce padding
+    height: 450px;
+    padding: 1.5rem;
   }
-   @media (max-width: 480px) {
-     height: 350px; // Even smaller height
-     padding: 1rem;
-   }
+  @media (max-width: 480px) {
+    height: 350px;
+    padding: 1rem;
+  }
 }
 
 .placeholderInner {
-  width: 90%; // Default desktop width
-  height: 90%; // Default desktop height
+  width: 90%;
+  height: 90%;
   border-radius: 0.5rem;
   background-color: $placeholder-gray;
+}
 
-  // No changes needed here for centering, flexbox on parent handles it
+.decorativeCircle3 {
+  position: absolute;
+  bottom: -60px; // Example positioning
+  left: -50px;  // Example positioning
+  z-index: 0;
+  pointer-events: none;
+}
+
+.decorativeImage {
+   opacity: 0.4;
 } 
+
+// Example placement in HeroSection.module.scss (repeat or move to global scope)
+// ... other styles ...
+
+.gradientCircleDecoration {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 100%, rgba(100, 100, 100, 0.35) 0%, rgba(100, 100, 100, 0) 80%);
+  z-index: 0;
+  pointer-events: none;
+  // Default size - Reduced
+  width: 250px; // Reduced from 400px
+  height: 250px; // Reduced from 400px
+}
+
+// --- Positioning Examples (You MUST add these) ---
+// Add specific positioning rules for each circle instance like this:
+
+.heroCircle1 {
+  // Inherits from .gradientCircleDecoration
+  width: 300px; // Reduced from 500px
+  height: 300px; // Reduced from 500px
+  top: 10%;
+  left: -150px; // Adjust position if needed due to size change
+}
+
+.heroCircle2 {
+  width: 200px; // Reduced from 350px
+  height: 200px; // Reduced from 350px
+  bottom: 5%;
+  right: -100px; // Adjust position if needed
+}
+
+.benefitsCircle1 {
+   width: 280px; // Reduced from 450px
+   height: 280px; // Reduced from 450px
+   top: 20%;
+   right: -140px; // Adjust position if needed
+}
+
+.featuresCircle1 {
+  width: 350px;
+  height: 350px;
+  bottom: 25px; // Changed from -50px to 25px
+  left: -175px;
+}
+
+.testimonialsCircle1 {
+    width: 250px; // Reduced from 400px (or keep default)
+    height: 250px; // Reduced from 400px (or keep default)
+    top: 5%;
+    left: -125px; // Adjust position if needed
+}

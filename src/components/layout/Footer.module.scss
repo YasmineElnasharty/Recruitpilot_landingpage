@@ -115,35 +115,29 @@ $transparent-amber: rgba(255, 167, 0, 0.2); // #FFA70033
   height: 2.25rem; // h-9
   border-radius: 9999px; // rounded-full
   @include flex-center;
-  transition: background-color 200ms;
+  // Set default background to the dark color (same as .secondary)
+  background-color: $gray-darker;
+  // Apply transitions for background, transform, and icon color
+  transition: background-color 200ms, transform 200ms ease-out, color 200ms;
 
-  &.primary {
-    background-color: $amber-500;
-    &:hover {
-      background-color: $amber-600;
-    }
-    .icon { // Target icon within primary link
+  .icon {
+    // Default icon color is white
+    color: $white;
+    font-size: 1rem;
+    transition: transform 200ms, color 200ms; // Add color transition for icon
+  }
+
+  // Common hover effect for ALL social icons
+  &:hover {
+    // Change background to orange on hover
+    background-color: $amber-600; // Use darker amber for hover state
+    transform: translateY(-3px); // Keep the lift effect
+
+    .icon {
+      // Change icon color to black for contrast on orange background
       color: $black;
+      transform: scale(1.1); // Keep existing scale
     }
-  }
-
-  &.secondary {
-    background-color: $gray-darker;
-    &:hover {
-      background-color: #333333; // hover:bg-[#333333]
-    }
-    .icon { // Target icon within secondary link
-      color: $white;
-    }
-  }
-
-  .icon { // Common icon styles
-    font-size: 1rem; // size={16} approximation
-    transition: transform 200ms;
-  }
-
-  &:hover .icon { // Icon animation on link hover
-    transform: scale(1.1);
   }
 }
 

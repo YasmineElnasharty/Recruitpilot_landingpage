@@ -29,17 +29,17 @@ const FeatureCard = ({
 const FeaturesSection = () => {
   const features = [
     {
-      icon: <Target size={28} className="text-amber-500" />,
+      icon: <Target size={28} />,
       title: 'AI Tools',
       description: 'Use our AI tools to create sourcing, presentation and interviewing content and output in secconds.'
     },
     {
-      icon: <Bot size={28} className="text-amber-500" />,
+      icon: <Bot size={28} />,
       title: 'AI Agents',
       description: 'Use our AI agents to automate and perfrom tasks on autopilot from screening to onboarding.'
     },
     {
-      icon: <HardDrive size={28} className="text-amber-500" />,
+      icon: <HardDrive size={28} />,
       title: 'Storage & RAG',
       description: 'Customizable storage allows you to retain and search data effortlessly.'
     }
@@ -47,6 +47,9 @@ const FeaturesSection = () => {
 
   return (
     <section id="features" className={styles.featuresSection}>
+      {/* Gradient Circle Decoration */}
+      <div className={`${styles.gradientCircleDecoration} ${styles.featuresCircle1}`}></div>
+
       <div className={styles.container}>
         <div className={styles.layoutGrid}>
           {/* Left column with features */}

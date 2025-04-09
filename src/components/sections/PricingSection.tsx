@@ -11,7 +11,28 @@ const PricingSection = () => {
         {/* Apply gradient background via SCSS */}
         <div className={styles.gradientBox}>
           <div className={styles.contentWrapper}>
-            {/* Text Container */}
+            {/* Background Robot Image 1 */}
+            <div className={`${styles.image} ${styles.backgroundRobot1}`}> {/* Wrap in divs for positioning */}
+              <Image
+                src="/images/robot-bg.png" // Ensure path is correct
+                alt="" // Decorative
+                layout="fill"
+                objectFit="contain" // Keep contain
+                aria-hidden="true"
+              />
+            </div>
+            {/* Background Robot Image 2 */}
+            <div className={`${styles.image} ${styles.backgroundRobot2}`}> {/* Wrap in divs for positioning */}
+              <Image
+                src="/images/robot-bg.png" // Ensure path is correct
+                alt="" // Decorative
+                layout="fill"
+                objectFit="contain" // Keep contain
+                aria-hidden="true"
+              />
+            </div>
+
+            {/* Text Container (Left Side) */}
             <div className={styles.textContainer}>
               <div className={styles.tag}>
                 Try RecruitPilot
@@ -21,44 +42,28 @@ const PricingSection = () => {
                 $19 per month
               </h2>
               <p className={styles.description}>
-                No credit card required. 10+ tools to explore
+                Pretty much the greatest hits of recruitment tools
+                <br />
+                you&apos;ll use every day.
               </p>
-
               <Link href="/trial" className={styles.trialButton}>
                 <span className={styles.text}>Start Free Trial</span>
                 <span className={styles.arrow}>›</span>
               </Link>
+              <p className={styles.noCreditText}>
+                No credit card required.
+              </p>
             </div>
 
-            {/* Image container */}
-            <div className={styles.imageContainer}>
-              {/* Background Robot Image 1 */}
-              <Image
-                src="/images/robot-bg.png" // Ensure these paths are correct
-                alt="" // Decorative image, empty alt
-                layout="fill"
-                // objectFit handled by SCSS
-                className={styles.backgroundRobot1} // Apply specific style
-                aria-hidden="true" // Hide decorative images from screen readers
-              />
-              {/* Background Robot Image 2 */}
-              <Image
-                src="/images/robot-bg.png" // Ensure these paths are correct
-                alt="" // Decorative image, empty alt
-                layout="fill"
-                // objectFit handled by SCSS
-                className={styles.backgroundRobot2} // Apply specific style
-                 aria-hidden="true" // Hide decorative images from screen readers
-              />
-
-              {/* Foreground Main Image */}
-              <Image
-                src="/images/pricing-graphic.png" // Ensure this path is correct
-                alt="Pricing illustration" // Descriptive alt text
-                layout="fill"
-                // objectFit handled by SCSS
-                className={styles.foregroundImage} // Apply specific style
-              />
+            {/* Quote Container (Right Side) */}
+            <div className={styles.quoteContainer}>
+              <div className={styles.quoteInner}>
+                 <p className={styles.quoteHeading}>Ever heard this?</p>
+                 <blockquote className={styles.quoteBody}>
+                   I got into recruitment to do more admin<br />and meet fewer people.
+                 </blockquote>
+                 <p className={styles.quoteConclusion}>No. Neither have we.</p>
+              </div>
             </div>
           </div>
         </div>
