@@ -114,10 +114,10 @@ $mobile-menu-border: $gray-700;
 
     // Style links specifically for mobile menu
     .navLink {
+      display: inline-block; // Change from implicit block/flex default
       font-size: 1.125rem; // Larger font size for mobile nav
       color: $white; // Set default mobile color to white
       padding: 0.5rem 0; // Add some vertical padding
-      width: 100%; // Make links take full width
       text-decoration: none; // Ensure no default underline
       position: relative; // Needed for pseudo-element positioning
       transition: color 0.3s ease-in-out; // Keep color transition
@@ -135,21 +135,16 @@ $mobile-menu-border: $gray-700;
 
       &:hover {
         color: $amber-500; // Change text color on hover
-        // text-decoration: underline; // Remove default underline
-        // text-decoration-color: $amber-500; // Remove default underline color
       }
 
-      &:hover::after {
-         width: 100%; // Expand underline on hover
+      // Underline now expands to width of inline-block element (text width)
+      &:hover::after,
+      &.active::after {
+         width: 100%; 
       }
 
       &.active {
         color: $amber-500; // Active remains orange
-
-        // Apply underline to active state by default
-        &::after {
-           width: 100%;
-        }
       }
     }
   }

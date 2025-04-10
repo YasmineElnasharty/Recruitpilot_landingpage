@@ -30,7 +30,6 @@ export default function Home() {
       
       <Footer />
 
-      <Script src="/assets/js/wave-background.js" strategy="lazyOnload" />
     </main>
   );
 }

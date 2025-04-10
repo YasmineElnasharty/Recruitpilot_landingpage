@@ -30,6 +30,7 @@ $hover-orange-end: rgba(255, 167, 0, 0.3);   // #FFA700 at 30% opacity
   padding-top: 3rem;    // Default mobile padding
   padding-bottom: 3rem;
   background-color: $gray-dark;
+  background-image: linear-gradient(to top, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0));
   position: relative;
   overflow: hidden;
 
@@ -239,9 +240,9 @@ $hover-orange-end: rgba(255, 167, 0, 0.3);   // #FFA700 at 30% opacity
 .benefitCard {
   border-radius: 0.75rem;
   padding: 2.5rem 1.5rem;
-  background-color: $white-05;
+  background-color: $white-05; // Default semi-transparent background (for desktop grid)
   border: 1px solid $white-10;
-  transition: border-color 0.3s, background-image 0.3s, box-shadow 0.3s, transform 0.3s;
+  transition: border-color 0.3s, background-image 0.3s, box-shadow 0.3s, transform 0.3s, background-color 0.3s; // Added background-color to transition
   position: relative;
   overflow: hidden;
   width: 100%;
@@ -253,11 +254,14 @@ $hover-orange-end: rgba(255, 167, 0, 0.3);   // #FFA700 at 30% opacity
     padding: 2rem 1.25rem;
   }
 
-  @media (max-width: 767px) {
+  // Mobile/Tablet specific styles (Slider view)
+  @media (max-width: 1023px) { // Changed from 767px to include tablets
      padding: 2.5rem 1.5rem;
      margin-bottom: 0;
+     background-color: $gray-medium; // Set solid background for smaller screens
   }
 
+  // Hover effect (applies to all sizes, gradient overlays solid color on small screens)
   &:hover {
     border-color: $white-10;
     border-top-color: $white-10;
@@ -266,6 +270,11 @@ $hover-orange-end: rgba(255, 167, 0, 0.3);   // #FFA700 at 30% opacity
 
     .iconContainer {
       transform: scale(1.05);
+    }
+
+    .hoverCircle {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
     }
   }
 }
@@ -346,12 +355,11 @@ $hover-orange-end: rgba(255, 167, 0, 0.3);   // #FFA700 at 30% opacity
 .gradientCircleDecoration {
   position: absolute;
   border-radius: 50%;
-  background: radial-gradient(circle at 50% 100%, rgba(100, 100, 100, 0.35) 0%, rgba(100, 100, 100, 0) 80%);
+  background: radial-gradient(circle at 50% 100%, rgba(100, 100, 100, 0.15) 0%, rgba(100, 100, 100, 0) 80%);
   z-index: 0;
   pointer-events: none;
-  // Default size - Reduced
-  width: 250px; // Reduced from 400px
-  height: 250px; // Reduced from 400px
+  width: 250px;
+  height: 250px;
 }
 
 // --- Positioning Examples (You MUST add these) ---
@@ -373,10 +381,17 @@ $hover-orange-end: rgba(255, 167, 0, 0.3);   // #FFA700 at 30% opacity
 }
 
 .benefitsCircle1 {
-   width: 280px; // Reduced from 450px
-   height: 280px; // Reduced from 450px
+   width: 280px; 
+   height: 280px; 
    top: 20%;
-   right: -140px; // Adjust position if needed
+   right: -170px; // Note: Adjusted from -140px in previous step
+
+   @media (max-width: 767px) {
+     width: 160px; // Further reduced from 180px
+     height: 160px; // Further reduced from 180px
+     right: -80px; // Adjust offset
+     top: 15%;
+   }
 }
 
 .featuresCircle1 {
@@ -391,4 +406,19 @@ $hover-orange-end: rgba(255, 167, 0, 0.3);   // #FFA700 at 30% opacity
     height: 250px; // Reduced from 400px (or keep default)
     top: 5%;
     left: -125px; // Adjust position if needed
+}
+
+.hoverCircle {
+  position: absolute;
+  top: 50%;      // Position the top edge at the middle
+  left: 50%;     // Position the left edge at the middle
+  width: 150px;  
+  height: 150px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 100%, rgba(100, 100, 100, 0.15) 0%, rgba(100, 100, 100, 0) 80%);
+  z-index: 5; 
+  opacity: 0; 
+  transition: opacity 0.3s ease, transform 0.4s ease; 
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0.8); 
 }

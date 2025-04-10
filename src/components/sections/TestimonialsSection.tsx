@@ -4,27 +4,33 @@ import { User, UserSquare } from 'lucide-react';
 import styles from './TestimonialsSection.module.scss'; // Import the SCSS module
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import Image from 'next/image'; // Import next/image
 
-// Function to guess gender (very basic) - icons styled via SCSS now
-const getIconBasedOnName = (name: string) => {
-  // Simple checks for specific female names, default to male/generic otherwise
-  const lowerCaseName = name.toLowerCase();
-  if (lowerCaseName.startsWith('sasha') || lowerCaseName.startsWith('elena') || lowerCaseName.startsWith('tiffany') || lowerCaseName.startsWith('fatima')) {
-    return <UserSquare size={24} className={styles.icon} />; // Example female/alternate icon
-  }
-  return <User size={24} className={styles.icon} />; // Default male/generic icon
-};
-
-const TestimonialCard = ({ name, title, testimonial }: { name: string, title: string, testimonial: string }) => {
+const TestimonialCard = ({ 
+  name, 
+  title, 
+  testimonial, 
+  imageUrl // Add imageUrl prop
+}: { 
+  name: string, 
+  title: string, 
+  testimonial: string, 
+  imageUrl: string // Add imageUrl type
+}) => {
   return (
-    // Use SCSS module class for the card
     <div className={styles.testimonialCard}>
       <div className={styles.cardContent}>
         <div className={styles.cardHeader}>
           <div className={styles.iconContainer}>
-             {getIconBasedOnName(name)}
+             {/* Use Next/Image component */}
+             <Image 
+               src={imageUrl}
+               alt={`${name}'s profile picture`}
+               layout="fill" 
+               objectFit="cover"
+               className={styles.profileImage} // Add a class for styling
+             />
           </div>
-          {/* Removed h4, using spans with specific classes */}
           <div className={styles.nameTitleWrapper}>
             <span className={styles.name}>
               {name},
@@ -97,16 +103,16 @@ const useCounter = (targetValue: number, duration: number = 2000, isVisible: boo
 // --- End Counter Hook ---
 
 const TestimonialsSection = () => {
-  // Use template literals (backticks) for testimonial strings
+  // USE THE UPDATED testimonials array from Step 2 ABOVE
   const testimonials = [
-    { id: 1, name: 'Sasha M.', title: 'Talent Acquisition Manager', testimonial: `The job ad creator and boolean search builder alone are saving me hours every week. It's like having a sourcing assistant on demand.`},
-    { id: 2, name: 'Ravi D.', title: 'HR Coordinator', testimonial: `The bias and inclusion checker is a game-changer. I feel confident that our job ads are truly inclusive now.` },
-    { id: 3, name: 'Elena G.', title: 'Recruiter', testimonial: `I never thought creating job descriptions could be this easy. The builder is intuitive and fast.`},
-    { id: 4, name: 'Marcus T.', title: 'Talent Partner', testimonial: `I use the CV summarizer multiple times daily—it helps me spot the best candidates in seconds.`},
-    { id: 5, name: 'Tiffany C.', title: 'Talent Manager', testimonial: `The candidate scorecard tool makes evaluation so much more consistent and fair. Love it!`},
-    { id: 6, name: 'Noah K.', title: 'HR Specialist', testimonial: `Feedback generation is usually painful. Now it's seamless, huge time saver!`},
-    { id: 7, name: 'Fatima Z.', title: 'Recruitment Consultant', testimonial: `The AI agent for candidate sourcing finds people I would've missed. Seriously impressive.`},
-    { id: 8, name: 'Carlos S.', title: 'Lead Recruiter', testimonial: `The screening question creator helped us weed out mismatches early in the process.`}
+    { id: 1, name: 'Sasha M.', title: 'Talent Acquisition Manager', testimonial: `The job ad creator and boolean search builder alone are saving me hours every week. It's like having a sourcing assistant on demand.`, imageUrl: '/testimonials/Sasha.png' }, // Ensure paths are correct!
+    { id: 2, name: 'Ravi D.', title: 'HR Coordinator', testimonial: `The bias and inclusion checker is a game-changer. I feel confident that our job ads are truly inclusive now.`, imageUrl: '/testimonials/Ravi.png' },
+    { id: 3, name: 'Elena G.', title: 'Recruiter', testimonial: `I never thought creating job descriptions could be this easy. The builder is intuitive and fast.`, imageUrl: '/testimonials/Elena.png' },
+    { id: 4, name: 'Marcus T.', title: 'Talent Partner', testimonial: `I use the CV summarizer multiple times daily—it helps me spot the best candidates in seconds.`, imageUrl: '/testimonials/Marcus.png' }, 
+    { id: 5, name: 'Tiffany C.', title: 'Talent Manager', testimonial: `The candidate scorecard tool makes evaluation so much more consistent and fair. Love it!`, imageUrl: '/testimonials/Tiffany.png' },
+    { id: 6, name: 'Noah K.', title: 'HR Specialist', testimonial: `Feedback generation is usually painful. Now it's seamless, huge time saver!`, imageUrl: '/testimonials/Noah.png' },
+    { id: 7, name: 'Fatima Z.', title: 'Recruitment Consultant', testimonial: `The AI agent for candidate sourcing finds people I would've missed. Seriously impressive.`, imageUrl: '/testimonials/Fatima.png' },
+    { id: 8, name: 'Carlos S.', title: 'Lead Recruiter', testimonial: `The screening question creator helped us weed out mismatches early in the process.`, imageUrl: '/testimonials/Carlos.png' } 
   ];
 
   // State for active index
@@ -214,6 +220,7 @@ const TestimonialsSection = () => {
                       name={testimonial.name}
                       title={testimonial.title}
                       testimonial={testimonial.testimonial}
+                      imageUrl={testimonial.imageUrl} // Pass the prop
                     />
                 </div>
               ))}

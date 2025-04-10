@@ -117,16 +117,29 @@ $purple-caret: #8b5cf6; // A slightly less saturated purple for the caret
 
   p {
     color: $gray-300;
-    font-size: 1rem; // text-base (Default)
+    font-size: 1rem; // Default Desktop font size - UNCHANGED
     line-height: 1.375;
-    white-space: nowrap; // << ADDED: Prevent wrapping on all sizes
-    overflow: hidden; // Optional: Hide overflow if text exceeds container
-    text-overflow: ellipsis; // Optional: Add ellipsis if text overflows
+    white-space: nowrap; // Keep for Desktop
+    overflow: hidden; 
+    text-overflow: ellipsis; 
 
-     @media (max-width: 767px) {
-       font-size: 0.9375rem; // Slightly smaller on mobile
-       line-height: 1.5; // Increase line height slightly for smaller font
+    @media (max-width: 1023px) { // Tablet
+      font-size: 0.95rem; // Slightly smaller for tablet
+      line-height: 1.4; // Adjust line height if needed
+      white-space: normal; // Allow wrapping
+      overflow: visible;
+      text-overflow: clip;
+      max-width: 90%;
+    }
+
+     @media (max-width: 767px) { // Mobile overrides
+       font-size: 0.7rem; // Further reduced size for mobile (was 0.9375rem)
+       line-height: 1.5; // Keep mobile line height
        text-align: center;
+       white-space: normal; // Keep wrapping allowed
+       overflow: visible; // Keep visible
+       text-overflow: clip; // Keep clip
+       max-width: 90%; // Keep max-width
      }
   }
 }
@@ -135,16 +148,20 @@ $purple-caret: #8b5cf6; // A slightly less saturated purple for the caret
 .searchBarContainer {
   position: relative;
   display: flex;
-  max-width: 40rem;
-  margin: 3.5rem auto 0;
+  max-width: 38rem; // Slightly reduced desktop max-width
+  margin: 3rem auto 0; // Reduced top margin slightly
   border-radius: 9999px;
   box-shadow: 0 4px 12px rgba($black, 0.1), 0 1px 2px rgba($black, 0.08);
   background-color: $gray-100;
 
-  @media (max-width: 767px) {
-     max-width: 90%;
-     border-radius: 9999px;
-     margin-top: 2.5rem;
+  @media (max-width: 1023px) { // Tablet
+    max-width: 85%;
+    margin-top: 2.5rem;
+  }
+
+  @media (max-width: 767px) { // Mobile
+     max-width: 90%; // Keep mobile max-width relative
+     margin-top: 2rem;
   }
 }
 
@@ -153,8 +170,8 @@ $purple-caret: #8b5cf6; // A slightly less saturated purple for the caret
   background-color: $transparent;
   border: none;
   color: $gray-700;
-  padding: 0.75rem 8rem 0.75rem 1.5rem;
-  font-size: 0.9375rem;
+  padding: 0.65rem 7.5rem 0.65rem 1.25rem; // Desktop padding (Vertical: 0.65rem) - UNCHANGED
+  font-size: 0.9rem;
   outline: none;
   caret-color: $purple-caret;
   border-radius: 9999px;
@@ -165,10 +182,14 @@ $purple-caret: #8b5cf6; // A slightly less saturated purple for the caret
     opacity: 1;
   }
 
-   @media (max-width: 767px) {
-     font-size: 0.875rem;
-     padding: 0.625rem 7rem 0.625rem 1.25rem;
-     border-radius: 9999px;
+  @media (max-width: 1023px) { // Tablet
+    padding: 0.7rem 7rem 0.7rem 1.1rem; // Increased vertical padding from 0.55rem
+    font-size: 0.85rem;
+  }
+
+   @media (max-width: 767px) { // Mobile
+     font-size: 0.5rem; // Keeping user's small font size for placeholder
+     padding: 0.55rem 6.5rem 0.55rem 1rem; // Increased vertical padding from 0.4rem
    }
 }
 
@@ -177,29 +198,25 @@ $purple-caret: #8b5cf6; // A slightly less saturated purple for the caret
   top: 0;
   right: 0;
   bottom: 0;
-  transform: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.4rem; // Reduced desktop gap
   background-color: $amber-500;
   color: $white;
   border: none;
-  padding: 0 1.75rem;
-  width: auto;
+  padding: 0.65rem 1.5rem; // Explicitly match desktop input vertical padding - UNCHANGED
   border-radius: 9999px;
-  font-weight: 700;
-  font-size: 0.9375rem;
+  font-weight: 600; // Slightly reduced weight
+  font-size: 0.9rem;
   cursor: pointer;
   transition: background-color 200ms, opacity 200ms;
   white-space: nowrap;
   flex-shrink: 0;
-  overflow: hidden;
-  z-index: 0;
 
   svg {
-    width: 1.1em;
-    height: 1.1em;
+    width: 1em; // Keep SVG size relative to font
+    height: 1em;
     fill: $white;
   }
 
@@ -211,11 +228,19 @@ $purple-caret: #8b5cf6; // A slightly less saturated purple for the caret
     background-color: $amber-600;
   }
 
-  @media (max-width: 767px) {
-     padding: 0 1.25rem;
-     font-size: 0.875rem;
-     gap: 0.375rem;
-     border-radius: 9999px;
+  @media (max-width: 1023px) { // Tablet
+    padding: 0.7rem 1.25rem; // Explicitly match increased tablet input vertical padding
+    font-size: 0.85rem;
+  }
+
+  @media (max-width: 767px) { // Mobile
+     padding: 0.55rem 1rem; // Explicitly match increased mobile input vertical padding
+     font-size: 0.75rem; // Keep button font size readable
+     gap: 0.25rem;
+     svg {
+       width: 0.9em;
+       height: 0.9em;
+     }
   }
 }
 // --- END SEARCH BAR STYLES V10.2 ---
@@ -325,12 +350,11 @@ $purple-caret: #8b5cf6; // A slightly less saturated purple for the caret
 .gradientCircleDecoration {
   position: absolute;
   border-radius: 50%;
-  background: radial-gradient(circle at 50% 100%, rgba(100, 100, 100, 0.35) 0%, rgba(100, 100, 100, 0) 80%);
+  background: radial-gradient(circle at 50% 100%, rgba(100, 100, 100, 0.15) 0%, rgba(100, 100, 100, 0) 80%);
   z-index: 0;
   pointer-events: none;
-  // Default size - Reduced
-  width: 250px; // Reduced from 400px
-  height: 250px; // Reduced from 400px
+  width: 250px;
+  height: 250px;
 }
 
 // --- Positioning Examples (You MUST add these) ---
@@ -338,17 +362,31 @@ $purple-caret: #8b5cf6; // A slightly less saturated purple for the caret
 
 .heroCircle1 {
   // Inherits from .gradientCircleDecoration
-  width: 300px; // Reduced from 500px
-  height: 300px; // Reduced from 500px
+  width: 300px; 
+  height: 300px;
   top: 10%;
-  left: -150px; // Adjust position if needed due to size change
+  left: -150px; 
+
+  @media (max-width: 767px) {
+    width: 180px;
+    height: 180px;
+    left: -90px;
+    top: 5%;
+  }
 }
 
 .heroCircle2 {
-  width: 200px; // Reduced from 350px
-  height: 200px; // Reduced from 350px
+  width: 200px;
+  height: 200px;
   bottom: 5%;
-  right: -100px; // Adjust position if needed
+  right: -100px;
+
+  @media (max-width: 767px) {
+    width: 130px;
+    height: 130px;
+    right: -65px;
+    bottom: 2%;
+  }
 }
 
 .benefitsCircle1 {

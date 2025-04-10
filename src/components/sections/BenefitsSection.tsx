@@ -9,6 +9,9 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'; // Import icons for ar
 const BenefitCard = ({ imageUrl, title, description }: { imageUrl: string, title: string, description: string }) => {
   return (
     <div className={styles.benefitCard}>
+      {/* Add the decorative circle element for hover */}
+      <div className={styles.hoverCircle}></div>
+
       <div className={styles.cardContent}>
         <div className={styles.iconContainer}>
           {/* Using Image component with layout="fill" requires positioned parent */}
@@ -86,6 +89,9 @@ const BenefitsSection = () => {
 
   return (
     <section className={styles.benefitsSection}>
+      {/* Gradient Circle Decorations */}
+      <div className={`${styles.gradientCircleDecoration} ${styles.benefitsCircle1}`}></div>
+
       <div className={styles.container}>
         {/* Section Header */}
         <div className={styles.header}>

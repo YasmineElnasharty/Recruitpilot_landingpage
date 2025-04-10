@@ -7,6 +7,9 @@ const PricingSection = () => {
 
   return (
     <section id="pricing" className={styles.pricingSection}>
+      {/* Gradient Circle Decoration */}
+      <div className={`${styles.gradientCircleDecoration} ${styles.pricingCircle1}`}></div>
+
       <div className={styles.container}>
         {/* Apply gradient background via SCSS */}
         <div className={styles.gradientBox}>

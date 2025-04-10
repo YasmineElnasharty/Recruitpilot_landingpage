@@ -240,9 +240,9 @@ $hover-orange-end: rgba(255, 167, 0, 0.3);   // #FFA700 at 30% opacity
 .testimonialCard {
   border-radius: 0.75rem;
   padding: 2rem 1.5rem;
-  background-color: $white-05;
+  background-color: $white-05; // Default semi-transparent background (for desktop ticker)
   border: 1px solid $white-10;
-  transition: border-color 0.3s, background-image 0.3s, box-shadow 0.3s, transform 0.3s;
+  transition: border-color 0.3s, background-color 0.3s, box-shadow 0.3s, transform 0.3s; // Changed background-image transition to background-color
   position: relative;
   overflow: hidden;
   display: flex;
@@ -257,10 +257,26 @@ $hover-orange-end: rgba(255, 167, 0, 0.3);   // #FFA700 at 30% opacity
       max-width: 350px;
   }
 
-  &:hover {
-    border-color: $white-10;
-    border-top-color: $white-10;
-    background-image: linear-gradient(to bottom, $hover-orange-start, $hover-orange-end);
+  // Hover effect for Desktop (ticker)
+  @media (min-width: 1024px) {
+    &:hover {
+      border-color: $white-10;
+      border-top-color: $white-10;
+      background-image: linear-gradient(to bottom, $hover-orange-start, $hover-orange-end);
+    }
+  }
+
+  // Styles for Tablet/Mobile (Stacked View)
+  @media (max-width: 1023px) {
+    background-color: $gray-medium; // Solid background for smaller screens
+    min-height: 160px; 
+
+    // Re-apply gradient hover effect on top of solid background
+    &:hover {
+      background-image: linear-gradient(to bottom, $hover-orange-start, $hover-orange-end); // Add gradient back
+      border-color: $white-10; // Keep border highlight consistent with desktop hover
+      // background-color: $gray-medium; // Base color remains
+    }
   }
 }
 
@@ -279,14 +295,13 @@ $hover-orange-end: rgba(255, 167, 0, 0.3);   // #FFA700 at 30% opacity
 }
 
 .iconContainer {
-  width: 2.25rem; // Smaller icon container
+  width: 2.25rem; 
   height: 2.25rem;
-  background-color: $gray-600;
   border-radius: 9999px;
-  margin-right: 0.75rem; // Reduced margin
-  @include flex-center;
+  margin-right: 0.75rem; 
   flex-shrink: 0;
-  border: 1px solid $gray-500;
+  overflow: hidden;
+  position: relative;
 
   @media (min-width: 1024px) { // Restore desktop size
       width: 2.5rem;
@@ -295,14 +310,10 @@ $hover-orange-end: rgba(255, 167, 0, 0.3);   // #FFA700 at 30% opacity
   }
 }
 
-.icon {
-  color: $gray-400;
-   width: 18px; // Adjust icon size within smaller container
-   height: 18px;
-    @media (min-width: 1024px) { // Restore desktop size
-       width: 24px; // Assuming original lucide size was 24
-       height: 24px;
-   }
+.profileImage {
+  // No specific styles needed if layout='fill' and objectFit='cover'
+  // unless you want transforms or other effects.
+  // The parent .iconContainer controls the shape (border-radius)
 }
 
 .nameTitleWrapper {

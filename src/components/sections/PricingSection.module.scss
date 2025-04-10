@@ -152,7 +152,7 @@ $gradient-end: #BC7407;
   transition: background-color 200ms;
   box-shadow: 0 4px 6px -1px rgba(0,0,0, 0.1), 0 2px 4px -2px rgba(0,0,0, 0.1);
   text-decoration: none;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
 
   &:hover {
     background-color: $gray-100;
@@ -173,15 +173,16 @@ $gradient-end: #BC7407;
 .noCreditText {
   color: $white;
   font-size: 0.75rem;
-  margin-top: -0.1rem;
-  padding-left: 1rem;
-  display: block;
+  display: block; 
+  clear: both; 
+  // Default (Desktop) transform: Moves 15px right and 5px up
+  transform: translate(15px, -5px); 
+  // Optional: width: fit-content;
 
-  @media (min-width: 768px) {
-     
-  }
+  // Override transform for smaller screens
   @media (max-width: 767px) {
-    
+    // Move less to the right (effectively moving it left relative to desktop)
+    transform: translate(5px, -5px); // Changed X value from 15px to 5px
   }
 }
 
@@ -238,8 +239,8 @@ $gradient-end: #BC7407;
   }
    @media (max-width: 767px) {
      right: 2rem;
-     bottom: 0rem;
-     transform: translate(-2.5rem, 2.5rem) scale(0.7);
+     bottom: 1rem;
+     transform: translate(-2.5rem, 1.5rem) scale(0.7);
      opacity: 0.5;
    }
 }
@@ -257,9 +258,9 @@ $gradient-end: #BC7407;
      opacity: 0.4;
    }
     @media (max-width: 767px) {
-     bottom: -1rem;
+     bottom: 0rem;
      right: -2rem;
-     transform: translate(-4rem, -2.5rem) scale(0.6);
+     transform: translate(-4rem, -3.5rem) scale(0.6);
      opacity: 0.3;
    }
 }
@@ -270,69 +271,125 @@ $gradient-end: #BC7407;
   flex-shrink: 0;
   width: 100%; // Full width on mobile
   max-width: 450px; // Max width for the quote box on mobile
-  margin-top: 2rem; // Space above on mobile
+  margin-top: 1rem; // Default mobile margin (was 2rem)
   z-index: 10; // Ensure above background images
 
-  // Apply styles for side-by-side layout starting at md
   @media (min-width: 768px) { // md:
     width: auto;
     max-width: none;
-    flex: 1 1 55%; // Was 45%
+    flex: 1 1 55%; 
     margin-top: 0;
-    margin-left: 2.5rem; // Keep margin for spacing
+    margin-left: 2.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
    @media (min-width: 1024px) { // lg:
-       margin-left: 3rem; // Keep margin for spacing
-       flex: 1 1 55%; // Maintain basis
+       margin-left: 3rem; 
+       flex: 1 1 55%;
    }
-  // REMOVED specific md-only block
 }
 
 .quoteInner {
-  border-radius: 1rem; // rounded-xl
-  padding: 1.5rem; // p-6
+  border-radius: 1rem; 
+  padding: 1.5rem; // Default mobile padding
   color: $quote-text-color;
-  width: 100%; // Ensure inner takes full width of container
+  width: 100%; 
   text-align: right;
 
-  @media (min-width: 768px) {
-     padding: 2rem; // md:p-8
+  @media (min-width: 768px) { // md:
+     padding: 2rem; // Desktop padding
+  }
+
+  // Smaller padding on very small screens
+  @media (max-width: 480px) {
+    padding: 1rem;
   }
 }
 
 .quoteHeading {
-  font-size: 1.5rem;   // Increased size (was 1.375rem)
+  font-size: 1.25rem;   // Default mobile size (was 1.5rem)
   font-weight: 600;
-  margin-bottom: 1.125rem; // Slightly increased margin
+  margin-bottom: 1rem; // Reduced mobile margin
   color: $white;
+
+  @media (min-width: 768px) { // md:
+    font-size: 1.5rem; // Restore desktop size
+    margin-bottom: 1.125rem; // Restore desktop margin
+  }
 }
 
 .quoteBody {
-  font-size: 1.75rem;  // Increased size (was 1.5rem)
+  font-size: 1.375rem;  // Default mobile size (was 1.75rem)
   font-weight: 600;
-  line-height: 1.65;   // Slightly adjusted line-height
-  margin-bottom: 1.125rem; // Slightly increased margin
+  line-height: 1.5;   // Adjusted mobile line-height
+  margin-bottom: 1rem; // Reduced mobile margin
   font-style: italic;
-  quotes: "“" "”";
+  quotes: "\201C" "\201D"; // Use escape codes for quotes in SCSS
 
-  &::before {
-    content: open-quote;
+  &::before { content: open-quote; }
+  &::after { content: close-quote; }
+
+  @media (min-width: 768px) { // md:
+    font-size: 1.75rem; // Restore desktop size
+    line-height: 1.65; // Restore desktop line-height
+    margin-bottom: 1.125rem; // Restore desktop margin
   }
-  &::after {
-    content: close-quote;
+
+  // Further reduce font size on very small screens
+  @media (max-width: 480px) {
+    font-size: 1.2rem;
+    line-height: 1.4;
   }
 }
 
 .quoteConclusion {
-  font-size: 1.5rem;   // Increased size (was 1.375rem)
+  font-size: 1.25rem;   // Default mobile size (was 1.5rem)
   font-weight: 600;
+
+  @media (min-width: 768px) { // md:
+    font-size: 1.5rem; // Restore desktop size
+  }
 }
 
 // --- Removed Foreground Image Style ---
 /*
 .foregroundImage { ... }
-*/ 
+*/
+
+// Import or define the base gradient circle style if not already present globally
+// If you haven't moved it to a global file, copy the .gradientCircleDecoration rule here:
+.gradientCircleDecoration {
+  position: absolute;
+  border-radius: 50%;
+  // Make gradient even more transparent
+  background: radial-gradient(circle at 50% 100%, rgba(100, 100, 100, 0.15) 0%, rgba(100, 100, 100, 0) 80%);
+  z-index: 0; // Make sure it's behind the main content container
+  pointer-events: none;
+  width: 250px; // Default size
+  height: 250px;
+}
+
+// Specific positioning for the pricing circle
+.pricingCircle1 {
+  width: 240px; 
+  height: 240px;
+  bottom: 0px; 
+  left: -100px;  
+
+  // Add media query for smaller size on mobile
+  @media (max-width: 767px) {
+    width: 180px;
+    height: 180px;
+    bottom: -20px; // Adjust position slightly if needed
+    left: -80px; // Adjust offset
+  }
+}
+
+// Ensure the section has relative positioning
+.pricingSection {
+  // ... other styles ...
+  position: relative;
+  overflow: hidden; // Hides the part of the circle outside the bounds
+} 

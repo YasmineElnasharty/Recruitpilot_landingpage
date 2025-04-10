@@ -326,12 +326,11 @@ $frame-orange-2: rgba(255, 153, 0, 0.1); // FF9900 at 10% opacity
 .gradientCircleDecoration {
   position: absolute;
   border-radius: 50%;
-  background: radial-gradient(circle at 50% 100%, rgba(100, 100, 100, 0.35) 0%, rgba(100, 100, 100, 0) 80%);
+  background: radial-gradient(circle at 50% 100%, rgba(100, 100, 100, 0.15) 0%, rgba(100, 100, 100, 0) 80%);
   z-index: 0;
   pointer-events: none;
-  // Default size - Reduced
-  width: 250px; // Reduced from 400px
-  height: 250px; // Reduced from 400px
+  width: 250px;
+  height: 250px;
 }
 
 // --- Positioning Examples (You MUST add these) ---
@@ -362,8 +361,15 @@ $frame-orange-2: rgba(255, 153, 0, 0.1); // FF9900 at 10% opacity
 .featuresCircle1 {
   width: 350px;
   height: 350px;
-  bottom: 25px; // Changed from -50px to 25px
+  bottom: 25px; 
   left: -175px;
+
+  @media (max-width: 767px) {
+    width: 190px; // Further reduced from 220px
+    height: 190px; // Further reduced from 220px
+    bottom: 10px; 
+    left: -95px; // Adjust offset
+  }
 }
 
 .testimonialsCircle1 {
