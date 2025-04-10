@@ -1,19 +1,12 @@
 "use client";
 
-import Link from 'next/link';
+// import Link from 'next/link'; // Remove unused import
 import Image from 'next/image';
 import styles from './HeroSection.module.scss'; // Import the SCSS module
-import { useEffect, useRef, useState, ChangeEvent, FocusEvent } from 'react'; // Import useEffect, useRef, useState, ChangeEvent, FocusEvent
+import { useEffect, useRef, useState, ChangeEvent } from 'react'; // Removed FocusEvent
 
 // --- NEW: Animated Search Bar Component ---
 const AnimatedSearchBar = () => {
-  const questions = [
-    "What are best practices for conducting virtual interviews?",
-    "How do I improve the candidate experience?",
-    "What strategies can I use to reduce turnover?",
-    "How should I negotiate the counteroffer with Jane?",
-    "Which were the top 3 applicants to my Java Developer Job ad?",
-  ];
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [animatedText, setAnimatedText] = useState(''); // Renamed from displayedText
   const [isDeleting, setIsDeleting] = useState(false);
@@ -26,6 +19,15 @@ const AnimatedSearchBar = () => {
 
   // Effect for the animation logic
   useEffect(() => {
+    // Define questions array inside the effect
+    const questions = [
+      "What are best practices for conducting virtual interviews?",
+      "How do I improve the candidate experience?",
+      "What strategies can I use to reduce turnover?",
+      "How should I negotiate the counteroffer with Jane?",
+      "Which were the top 3 applicants to my Java Developer Job ad?",
+    ];
+
     // Only run animation if the input is not focused AND user hasn't typed anything
     if (isFocused || userInput) {
        // If user is focused or has typed, ensure animated text is cleared
@@ -58,7 +60,7 @@ const AnimatedSearchBar = () => {
     return () => clearTimeout(timer);
 
   // Update dependencies: run effect when focus changes or user input clears, besides animation states
-  }, [animatedText, isDeleting, currentQuestionIndex, questions, deletingSpeed, typingSpeed, pauseDuration, isFocused, userInput]);
+  }, [animatedText, isDeleting, currentQuestionIndex, deletingSpeed, typingSpeed, pauseDuration, isFocused, userInput]);
 
 
   // Handler for user input changes

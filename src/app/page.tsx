@@ -8,7 +8,6 @@ import FeaturesSection from '@/components/sections/FeaturesSection';
 import BenefitsSection from '@/components/sections/BenefitsSection';
 import TestimonialsSection from '@/components/sections/TestimonialsSection';
 import PricingSection from '@/components/sections/PricingSection';
-import Script from 'next/script';
 import React from 'react';
 
 export default function Home() {

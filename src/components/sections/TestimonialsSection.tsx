@@ -1,6 +1,6 @@
 "use client"; // Make sure client component directive is present
 
-import { User, UserSquare } from 'lucide-react';
+// import { User, UserSquare } from 'lucide-react'; // Remove unused imports
 import styles from './TestimonialsSection.module.scss'; // Import the SCSS module
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
